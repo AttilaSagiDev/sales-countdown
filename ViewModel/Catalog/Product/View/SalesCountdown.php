@@ -10,8 +10,10 @@ namespace Space\SalesCountdown\ViewModel\Catalog\Product\View;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\Registry;
+use Magento\Store\Model\StoreManagerInterface;
 use Space\SalesCountdown\Api\Data\ConfigInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class SalesCountdown implements ArgumentInterface
 {
@@ -19,6 +21,11 @@ class SalesCountdown implements ArgumentInterface
      * @var Registry
      */
     private Registry $registry;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
 
     /**
      * @var ConfigInterface
@@ -29,13 +36,16 @@ class SalesCountdown implements ArgumentInterface
      * Constructor
      *
      * @param Registry $registry
+     * @param StoreManagerInterface $storeManager
      * @param ConfigInterface $config
      */
     public function __construct(
         Registry $registry,
+        StoreManagerInterface $storeManager,
         ConfigInterface $config
     ) {
         $this->registry = $registry;
+        $this->storeManager = $storeManager;
         $this->config = $config;
     }
 
@@ -55,6 +65,27 @@ class SalesCountdown implements ArgumentInterface
         }
 
         return $specialToDate;
+    }
+
+    /**
+     * Get product Id
+     *
+     * @return int
+     */
+    public function getProductId(): int
+    {
+        return (int)$this->getProduct()->getId();
+    }
+
+    /**
+     * Get store code
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCode(): string
+    {
+        return $this->storeManager->getStore()->getCode();
     }
 
     /**

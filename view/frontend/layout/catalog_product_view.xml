@@ -20,5 +20,16 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="space.sales.countdown.script"
+                   template="Space_SalesCountdown::catalog/product/view/script/script.phtml"
+                   ifconfig="sales_countdown/sales_countdown_config/enabled">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>
