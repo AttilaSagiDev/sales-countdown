@@ -50,21 +50,13 @@ class SalesCountdown implements ArgumentInterface
     }
 
     /**
-     * Get product special to date
+     * Check if sales countdown module is enabled
      *
-     * @return string
+     * @return bool
      */
-    public function getSpecialToDate(): string
+    public function isEnabled(): bool
     {
-        $specialToDate = '';
-
-        if ($this->getProduct()->hasData('special_to_date')
-            && (float)$this->getProduct()->getSpecialPrice() === (float)$this->getProduct()->getFinalPrice()
-        ) {
-            return $this->getProduct()->getSpecialToDate();
-        }
-
-        return $specialToDate;
+        return $this->config->isEnabled();
     }
 
     /**
