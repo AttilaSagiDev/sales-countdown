@@ -1,0 +1,25 @@
+<?php
+/**
+ * Copyright (c) 2024 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $viewModel \Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown
+ * @var $escaper \Magento\Framework\Escaper
+ */
+
+$viewModel = $block->getData('view_model');
+?>
+<?php if (null !== $viewModel && !empty($viewModel->getSpecialToDate())): ?>
+    <style>
+        #sales-countdown {
+            padding: 1rem;
+            background-color: #6fa0df;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+    <div id="sales-countdown" class="sales-countdown no-display"></div>
+<?php endif; ?>

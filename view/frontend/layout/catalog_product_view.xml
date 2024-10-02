@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2024 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.main">
+            <block name="space.sales.countdown"
+                   template="Space_SalesCountdown::catalog/product/view/sales-countdown.phtml"
+                   before="-"
+                   ifconfig="sales_countdown/sales_countdown_config/enabled">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="space.sales.countdown.script"
+                   template="Space_SalesCountdown::catalog/product/view/script/script.phtml"
+                   ifconfig="sales_countdown/sales_countdown_config/enabled">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
