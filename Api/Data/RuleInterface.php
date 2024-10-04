@@ -39,9 +39,9 @@ interface RuleInterface
     /**
      * Get description
      *
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string;
+    public function getDescription(): ?string;
 
     /**
      * Get from date
@@ -67,9 +67,9 @@ interface RuleInterface
     /**
      * Get conditions serialized
      *
-     * @return string
+     * @return string|null
      */
-    public function getConditionsSerialized(): string;
+    public function getConditionsSerialized(): ?string;
 
     /**
      * Get sort order
