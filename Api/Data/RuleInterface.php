@@ -13,6 +13,7 @@ interface RuleInterface
     /**
      * Constants for keys of data array
      */
+    public const TABLE_NAME = 'sales_countdown_rule';
     public const RULE_ID = 'rule_id';
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
@@ -81,10 +82,10 @@ interface RuleInterface
     /**
      * Set rule ID
      *
-     * @param int $id
+     * @param int $ruleId
      * @return RuleInterface
      */
-    public function setId(int $id): RuleInterface;
+    public function setId(int $ruleId): RuleInterface;
 
     /**
      * Set name
@@ -133,4 +134,12 @@ interface RuleInterface
      * @return RuleInterface
      */
     public function setConditionsSerialized(string $conditionsSerialized): RuleInterface;
+
+    /**
+     * Set sort order
+     *
+     * @param int $sortOrder
+     * @return RuleInterface
+     */
+    public function setSortOrder(int $sortOrder): RuleInterface;
 }
