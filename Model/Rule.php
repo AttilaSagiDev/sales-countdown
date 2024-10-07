@@ -19,6 +19,16 @@ use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
 class Rule extends AbstractModel implements RuleInterface, IdentityInterface
 {
     /**
+     * Enabled
+     */
+    public const STATUS_ENABLED = 1;
+
+    /**
+     * Disabled
+     */
+    public const STATUS_DISABLED = 0;
+
+    /**
      * Rule cache tag
      */
     public const string CACHE_TAG = 'sales_countdown_rule';
@@ -224,5 +234,15 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     public function setSortOrder(int $sortOrder): RuleInterface
     {
         return $this->setData(self::SORT_ORDER, $sortOrder);
+    }
+
+    /**
+     * Rules statuses
+     *
+     * @return array
+     */
+    public function getAvailableStatuses(): array
+    {
+        return [self::STATUS_ENABLED => __('Enabled'), self::STATUS_DISABLED => __('Disabled')];
     }
 }
