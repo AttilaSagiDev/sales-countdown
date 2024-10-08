@@ -12,12 +12,8 @@ use Magento\Backend\App\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\View\Result\Page;
-use Magento\Framework\App\Request\DataPersistorInterface;
 
-class Index extends Action implements HttpGetActionInterface
+class Edit extends Action implements HttpGetActionInterface
 {
     /**
      * Authorization level of a basic admin session
@@ -46,21 +42,14 @@ class Index extends Action implements HttpGetActionInterface
     }
 
     /**
-     * Index action
+     * Edit rule
      *
-     * @return ResponseInterface|ResultInterface|Page
+     * @return void
      */
-    public function execute(): Page|ResultInterface|ResponseInterface
+    public function execute()
     {
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('Space_SalesCountdown::sales_countdown')
-            ->addBreadcrumb(__('Sales Countdown'), __('Sales Countdown'))
-            ->addBreadcrumb(__('Sales Countdown Rules'), __('Sales Countdown Rules')); // NOSONAR
-        $resultPage->getConfig()->getTitle()->prepend(__('Sales Countdown Rules'));
-
-        $dataPersistor = $this->_objectManager->get(DataPersistorInterface::class);
-        $dataPersistor->clear('sales_countdown_rule');
-
-        return $resultPage;
+        $id = $this->getRequest()->getParam('rule_id');
+        var_dump($id);
+        die('rule edit page');
     }
 }

@@ -145,12 +145,16 @@
                 <label translate="true">To Date</label>
             </settings>
         </column>
-        <!--
+        <column name="sort_order">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Sort Order</label>
+            </settings>
+        </column>
         <actionsColumn name="actions" class="Space\SalesCountdown\Ui\Component\Listing\Column\RuleActions">
             <settings>
                 <indexField>rule_id</indexField>
             </settings>
         </actionsColumn>
-        -->
     </columns>
 </listing>
