@@ -31,7 +31,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Rule cache tag
      */
-    public const string CACHE_TAG = 'sales_countdown_rule';
+    public const CACHE_TAG = 'sales_countdown_rule';
 
     /**
      * Model cache tag for clear cache in after save and after delete
