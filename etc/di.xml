@@ -9,8 +9,27 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Space\SalesCountdown\Api\Data\ConfigInterface"
                 type="Space\SalesCountdown\Model\Config" />
+    <preference for="Space\SalesCountdown\Api\Data\RuleInterface"
+                type="Space\SalesCountdown\Model\Rule" />
     <preference for="Space\SalesCountdown\Api\Data\SalesCountdownInterface"
                 type="Space\SalesCountdown\Model\SalesCountdown" />
     <preference for="Space\SalesCountdown\Api\CalculateCountdownInterface"
                 type="Space\SalesCountdown\Model\Service\CalculateCountdown" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_countdown_rule_listing_data_source"
+                      xsi:type="string">Space\SalesCountdown\Model\ResourceModel\Rule\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\ResourceModel\Rule\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_countdown_rule</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_countdown_rule_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">countdown_rule_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\Rule</argument>
+        </arguments>
+    </type>
 </config>

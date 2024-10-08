@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2024 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_countdown_rule" resource="default" engine="innodb" comment="SalesCountdown">
+        <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="date" name="from_date" nullable="false" comment="From"/>
+        <column xsi:type="date" name="to_date" nullable="false" comment="To"/>
+        <column xsi:type="smallint" name="is_active" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Is Active"/>
+        <column xsi:type="mediumtext" name="conditions_serialized" nullable="true" comment="Conditions Serialized"/>
+        <column xsi:type="int" name="sort_order" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Sort Order"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+        </constraint>
+        <index referenceId="SALES_COUNTDOWN_IS_ACTIVE_SORT_ORDER_TO_DATE_FROM_DATE" indexType="btree">
+            <column name="is_active"/>
+            <column name="sort_order"/>
+            <column name="to_date"/>
+            <column name="from_date"/>
+        </index>
+    </table>
+</schema>
