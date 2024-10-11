@@ -11,6 +11,8 @@
                 type="Space\SalesCountdown\Model\Config" />
     <preference for="Space\SalesCountdown\Api\Data\RuleInterface"
                 type="Space\SalesCountdown\Model\Rule" />
+    <preference for="Space\SalesCountdown\Api\RuleRepositoryInterface"
+                type="Space\SalesCountdown\Model\RuleRepository" />
     <preference for="Space\SalesCountdown\Api\Data\SalesCountdownInterface"
                 type="Space\SalesCountdown\Model\SalesCountdown" />
     <preference for="Space\SalesCountdown\Api\CalculateCountdownInterface"
