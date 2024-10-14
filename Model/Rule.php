@@ -65,7 +65,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     public function getId(): ?int
     {
-        return $this->getData(self::RULE_ID);
+        return (int)$this->getData(self::RULE_ID);
     }
 
     /**
