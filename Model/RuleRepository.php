@@ -22,12 +22,15 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\CouldNotSaveException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class RuleRepository implements RuleRepositoryInterface
 {
     /**
      * @var ResourceRule
      */
-    private ResourceRule $resourceRule;
+    private ResourceRule $resource;
 
     /**
      * @var RuleFactory

@@ -28,9 +28,9 @@ class DataProvider extends ModifierPoolDataProvider
     private DataPersistorInterface $dataPersistor;
 
     /**
-     * @var array
+     * @var array|null
      */
-    private array $loadedData;
+    private ?array $loadedData = null;
 
     /**
      * Constructor
@@ -62,9 +62,9 @@ class DataProvider extends ModifierPoolDataProvider
     /**
      * Get data
      *
-     * @return array
+     * @return array|null
      */
-    public function getData(): array
+    public function getData(): ?array
     {
         if (isset($this->loadedData)) {
             return $this->loadedData;

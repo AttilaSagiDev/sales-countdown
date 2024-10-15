@@ -16,9 +16,9 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Magento\Cms\Block\Adminhtml\Block\Edit\SaveButton"/>
-            <button name="delete" class="Magento\Cms\Block\Adminhtml\Block\Edit\DeleteButton"/>
-            <button name="back" class="Magento\Cms\Block\Adminhtml\Block\Edit\BackButton"/>
+            <button name="save" class="Space\SalesCountdown\Block\Adminhtml\Rule\Edit\SaveButton"/>
+            <button name="delete" class="Space\SalesCountdown\Block\Adminhtml\Rule\Edit\DeleteButton"/>
+            <button name="back" class="Space\SalesCountdown\Block\Adminhtml\Rule\Edit\BackButton"/>
         </buttons>
         <namespace>sales_countdown_rule_form</namespace>
         <dataScope>data</dataScope>

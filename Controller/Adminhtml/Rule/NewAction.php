@@ -51,7 +51,6 @@ class NewAction extends Action implements HttpGetActionInterface
      */
     public function execute(): ResultInterface|ResponseInterface|Forward
     {
-        /** @var Forward $resultForward */
         $resultForward = $this->resultForwardFactory->create();
         return $resultForward->forward('edit');
     }
