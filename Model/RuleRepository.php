@@ -21,6 +21,7 @@ use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\CouldNotDeleteException;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -146,5 +147,35 @@ class RuleRepository implements RuleRepositoryInterface
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $rule;
+    }
+
+    /**
+     * Delete rule
+     *
+     * @param Data\RuleInterface $rule
+     * @return bool
+     * @throws CouldNotDeleteException
+     */
+    public function delete(Data\RuleInterface $rule): bool
+    {
+        try {
+            $this->resource->delete($rule);
+        } catch (\Exception $exception) {
+            throw new CouldNotDeleteException(__($exception->getMessage()));
+        }
+        return true;
+    }
+
+    /**
+     * Delete rule by ID
+     *
+     * @param int $ruleId
+     * @return bool
+     * @throws CouldNotDeleteException
+     * @throws NoSuchEntityException
+     */
+    public function deleteById(int $ruleId): bool
+    {
+        return $this->delete($this->getById($ruleId));
     }
 }

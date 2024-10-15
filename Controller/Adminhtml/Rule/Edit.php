@@ -10,8 +10,6 @@ namespace Space\SalesCountdown\Controller\Adminhtml\Rule;
 
 use Magento\Backend\App\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 use Space\SalesCountdown\Api\RuleRepositoryInterface;
 use Magento\Backend\App\Action\Context;
@@ -19,6 +17,7 @@ use Magento\Backend\Model\View\Result\Page;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Space\SalesCountdown\Model\Rule;
 
 class Edit extends Action implements HttpGetActionInterface
