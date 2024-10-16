@@ -34,4 +34,13 @@
             <argument name="resourceModel" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\Rule</argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Space\SalesCountdown\Api\Data\RuleInterface" xsi:type="string">
+                    Space\SalesCountdown\Api\RuleRepositoryInterface
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>
