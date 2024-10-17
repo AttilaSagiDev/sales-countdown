@@ -71,9 +71,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Get name
      *
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->getData(self::NAME);
     }
@@ -91,9 +91,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Get from date
      *
-     * @return string
+     * @return string|null
      */
-    public function getFromDate(): string
+    public function getFromDate(): ?string
     {
         return $this->getData(self::FROM_DATE);
     }
@@ -101,9 +101,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Get to date
      *
-     * @return string
+     * @return string|null
      */
-    public function getToDate(): string
+    public function getToDate(): ?string
     {
         return $this->getData(self::TO_DATE);
     }
@@ -135,7 +135,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     public function getSortOrder(): int
     {
-        return $this->getData(self::SORT_ORDER);
+        return (int)$this->getData(self::SORT_ORDER);
     }
 
     /**
@@ -195,7 +195,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Set to date
      *
-     * @param string $toDate
+     * @param string|null $toDate
      * @return RuleInterface
      */
     public function setToDate(string $toDate): RuleInterface

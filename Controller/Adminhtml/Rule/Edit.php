@@ -57,7 +57,7 @@ class Edit extends Action implements HttpGetActionInterface
     }
 
     /**
-     * Edit CMS block
+     * Edit rule
      *
      * @return Page|Redirect|ResponseInterface|ResultInterface
      */

@@ -138,13 +138,12 @@
                 <label translate="true">Description</label>
                 <dataScope>description</dataScope>
                 <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
                     <rule name="validate-no-html-tags" xsi:type="boolean">true</rule>
                     <rule name="max_text_length" xsi:type="number">1000</rule>
                 </validation>
                 <tooltip>
                     <description translate="true">
-                        This is content for the post. Maximum characters 1000 and html tags not allowed
+                        This is content for the description. Maximum characters 1000 and html tags not allowed
                     </description>
                 </tooltip>
             </settings>
@@ -173,7 +172,6 @@
             <settings>
                 <validation>
                     <rule name="validate-date" xsi:type="boolean">true</rule>
-                    <rule name="validate-date-range" xsi:type="string">from_date</rule>
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">To</label>

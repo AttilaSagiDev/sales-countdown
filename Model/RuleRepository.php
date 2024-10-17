@@ -11,7 +11,6 @@ namespace Space\SalesCountdown\Model;
 use Space\SalesCountdown\Api\RuleRepositoryInterface;
 use Space\SalesCountdown\Api\Data;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
-use Space\SalesCountdown\Model\RuleFactory;
 use Space\SalesCountdown\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\Reflection\DataObjectProcessor;
@@ -20,6 +19,7 @@ use Magento\Framework\EntityManager\HydratorInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\CouldNotDeleteException;
 
@@ -130,12 +130,12 @@ class RuleRepository implements RuleRepositoryInterface
     /**
      * Save rule data
      *
-     * @param Data\RuleInterface $rule
+     * @param RuleInterface $rule
      * @return Rule
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
      */
-    public function save(Data\RuleInterface $rule): Rule
+    public function save(RuleInterface $rule): Rule
     {
         if ($rule->getId() && $rule instanceof Rule && !$rule->getOrigData()) {
             $rule = $this->hydrator->hydrate($this->getById($rule->getId()), $this->hydrator->extract($rule));
@@ -152,11 +152,11 @@ class RuleRepository implements RuleRepositoryInterface
     /**
      * Delete rule
      *
-     * @param Data\RuleInterface $rule
+     * @param RuleInterface $rule
      * @return bool
      * @throws CouldNotDeleteException
      */
-    public function delete(Data\RuleInterface $rule): bool
+    public function delete(RuleInterface $rule): bool
     {
         try {
             $this->resource->delete($rule);
