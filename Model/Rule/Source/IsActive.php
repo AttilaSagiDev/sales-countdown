@@ -9,25 +9,18 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Model\Rule\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
-use Space\SalesCountdown\Model\Rule;
 
 class IsActive implements OptionSourceInterface
 {
     /**
-     * @var Rule
+     * Enabled
      */
-    private Rule $rule;
+    public const STATUS_ENABLED = 1;
 
     /**
-     * Constructor
-     *
-     * @param Rule $rule
+     * Disabled
      */
-    public function __construct(
-        Rule $rule
-    ) {
-        $this->rule = $rule;
-    }
+    public const STATUS_DISABLED = 0;
 
     /**
      * Get options
@@ -36,7 +29,7 @@ class IsActive implements OptionSourceInterface
      */
     public function toOptionArray(): array
     {
-        $availableOptions = $this->rule->getAvailableStatuses();
+        $availableOptions = $this->getAvailableStatuses();
         $options = [];
 
         foreach ($availableOptions as $key => $value) {
@@ -47,5 +40,18 @@ class IsActive implements OptionSourceInterface
         }
 
         return $options;
+    }
+
+    /**
+     * Rules statuses
+     *
+     * @return array
+     */
+    public function getAvailableStatuses(): array
+    {
+        return [
+            self::STATUS_ENABLED => __('Enabled'),
+            self::STATUS_DISABLED => __('Disabled')
+        ];
     }
 }

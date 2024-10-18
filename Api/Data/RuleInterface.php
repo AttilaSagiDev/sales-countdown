@@ -114,10 +114,10 @@ interface RuleInterface
     /**
      * Set to date
      *
-     * @param string $toDate
+     * @param string|null $toDate
      * @return RuleInterface
      */
-    public function setToDate(string $toDate): RuleInterface;
+    public function setToDate(string|null $toDate): RuleInterface;
 
     /**
      * Set is active
