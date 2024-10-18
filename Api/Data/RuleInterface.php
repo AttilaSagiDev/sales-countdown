@@ -33,9 +33,9 @@ interface RuleInterface
     /**
      * Get name
      *
-     * @return string
+     * @return string|null
      */
-    public function getName(): string;
+    public function getName(): ?string;
 
     /**
      * Get description
@@ -47,16 +47,16 @@ interface RuleInterface
     /**
      * Get from date
      *
-     * @return string
+     * @return string|null
      */
-    public function getFromDate(): string;
+    public function getFromDate(): ?string;
 
     /**
      * Get to date
      *
-     * @return string
+     * @return string|null
      */
-    public function getToDate(): string;
+    public function getToDate(): ?string;
 
     /**
      * Get is active
@@ -114,10 +114,10 @@ interface RuleInterface
     /**
      * Set to date
      *
-     * @param string $toDate
+     * @param string|null $toDate
      * @return RuleInterface
      */
-    public function setToDate(string $toDate): RuleInterface;
+    public function setToDate(string|null $toDate): RuleInterface;
 
     /**
      * Set is active

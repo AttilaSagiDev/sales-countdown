@@ -19,16 +19,6 @@ use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
 class Rule extends AbstractModel implements RuleInterface, IdentityInterface
 {
     /**
-     * Enabled
-     */
-    public const STATUS_ENABLED = 1;
-
-    /**
-     * Disabled
-     */
-    public const STATUS_DISABLED = 0;
-
-    /**
      * Rule cache tag
      */
     public const CACHE_TAG = 'sales_countdown_rule';
@@ -65,15 +55,15 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     public function getId(): ?int
     {
-        return $this->getData(self::RULE_ID);
+        return (int)$this->getData(self::RULE_ID);
     }
 
     /**
      * Get name
      *
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->getData(self::NAME);
     }
@@ -91,9 +81,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Get from date
      *
-     * @return string
+     * @return string|null
      */
-    public function getFromDate(): string
+    public function getFromDate(): ?string
     {
         return $this->getData(self::FROM_DATE);
     }
@@ -101,9 +91,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Get to date
      *
-     * @return string
+     * @return string|null
      */
-    public function getToDate(): string
+    public function getToDate(): ?string
     {
         return $this->getData(self::TO_DATE);
     }
@@ -135,7 +125,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     public function getSortOrder(): int
     {
-        return $this->getData(self::SORT_ORDER);
+        return (int)$this->getData(self::SORT_ORDER);
     }
 
     /**
@@ -195,10 +185,10 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Set to date
      *
-     * @param string $toDate
+     * @param string|null $toDate
      * @return RuleInterface
      */
-    public function setToDate(string $toDate): RuleInterface
+    public function setToDate(string|null $toDate): RuleInterface
     {
         return $this->setData(self::TO_DATE, $toDate);
     }
@@ -234,15 +224,5 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     public function setSortOrder(int $sortOrder): RuleInterface
     {
         return $this->setData(self::SORT_ORDER, $sortOrder);
-    }
-
-    /**
-     * Rules statuses
-     *
-     * @return array
-     */
-    public function getAvailableStatuses(): array
-    {
-        return [self::STATUS_ENABLED => __('Enabled'), self::STATUS_DISABLED => __('Disabled')];
     }
 }

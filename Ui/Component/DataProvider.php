@@ -16,9 +16,6 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Ui\Component\Container;
 use Magento\Framework\Api\Filter;
 
-/**
- * DataProvider for cms ui.
- */
 class DataProvider extends UiDataProvider
 {
     /**

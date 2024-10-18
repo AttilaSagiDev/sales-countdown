@@ -10,6 +10,16 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::marketing">
+                    <resource id="Space_SalesCountdown::sales_countdown_rules" title="Sales Countdown"
+                              translate="title" sortOrder="500">
+                        <resource id="Space_SalesCountdown::sales_countdown_rule"
+                                  title="Sales Countdown Rules" translate="title" sortOrder="10">
+                            <resource id="Space_SalesCountdown::save" title="Save Rule" translate="title" sortOrder="10" />
+                            <resource id="Space_SalesCountdown::delete" title="Delete Rule" translate="title" sortOrder="20" />
+                        </resource>
+                    </resource>
+                </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">

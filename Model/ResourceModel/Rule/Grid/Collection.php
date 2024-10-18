@@ -115,7 +115,7 @@ class Collection extends RuleCollection implements SearchResultInterface
     public function addFieldToFilter($field, $condition = null): CollectionDb|Collection
     {
         if ($field === 'from_date' || $field === 'to_date') {
-            if (is_array($condition)) {
+            if (is_array($condition)) { //NOSONAR
                 foreach ($condition as $key => $value) {
                     $condition[$key] = $this->timeZone->convertConfigTimeToUtc($value);
                 }

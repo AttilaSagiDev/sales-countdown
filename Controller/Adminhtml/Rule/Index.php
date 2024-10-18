@@ -20,6 +20,13 @@ use Magento\Framework\App\Request\DataPersistorInterface;
 class Index extends Action implements HttpGetActionInterface
 {
     /**
+     * Authorization level of a basic admin session
+     *
+     * @see _isAllowed()
+     */
+    public const ADMIN_RESOURCE = 'Space_SalesCountdown::sales_countdown_rule';
+
+    /**
      * @var PageFactory
      */
     private PageFactory $resultPageFactory;
