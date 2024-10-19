@@ -8,7 +8,20 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model;
 
-use Magento\Framework\Model\AbstractModel;
+use Magento\CatalogRule\Model\Rule\Action\Collection;
+use Magento\CatalogRule\Model\Rule\Action\CollectionFactory as RuleCollectionFactory;
+use Magento\CatalogRule\Model\Rule\Condition\CombineFactory;
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Rule\Model\AbstractModel;
+use Magento\Rule\Model\Condition\Combine;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
@@ -38,6 +51,60 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     protected $_eventPrefix = 'sales_countdown_rule'; // NOSONAR
 
     /**
+     * @var CombineFactory
+     */
+    protected CombineFactory $_combineFactory;
+
+    /**
+     * @var RuleCollectionFactory
+     */
+    protected RuleCollectionFactory $_actionCollectionFactory;
+
+    /**
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
+     * @param CombineFactory $combineFactory
+     * @param RuleCollectionFactory $actionCollectionFactory
+     * @param TimezoneInterface $localeDate
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
+     * @param ExtensionAttributesFactory|null $extensionFactory
+     * @param AttributeValueFactory|null $customAttributeFactory
+     * @param Json|null $serializer
+     */
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        CombineFactory $combineFactory,
+        RuleCollectionFactory $actionCollectionFactory,
+        TimezoneInterface $localeDate,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
+        array $data = [],
+        ExtensionAttributesFactory $extensionFactory = null,
+        AttributeValueFactory $customAttributeFactory = null,
+        Json $serializer = null
+    ) {
+        $this->_combineFactory = $combineFactory;
+        $this->_actionCollectionFactory = $actionCollectionFactory;
+        parent::__construct(
+            $context,
+            $registry,
+            $formFactory,
+            $localeDate,
+            $resource,
+            $resourceCollection,
+            $data,
+            $extensionFactory,
+            $customAttributeFactory,
+            $serializer
+        );
+    }
+
+    /**
      * Constructor
      *
      * @return void
@@ -45,7 +112,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     protected function _construct(): void
     {
+        parent::_construct();
         $this->_init(ResourceRule::class);
+        $this->setIdFieldName('rule_id');
     }
 
     /**
@@ -224,5 +293,36 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     public function setSortOrder(int $sortOrder): RuleInterface
     {
         return $this->setData(self::SORT_ORDER, $sortOrder);
+    }
+
+    /**
+     * Getter for rule conditions collection
+     *
+     * @return Combine
+     */
+    public function getConditionsInstance(): Combine
+    {
+        return $this->_combineFactory->create();
+    }
+
+    /**
+     * Getter for rule actions collection
+     *
+     * @return Collection
+     */
+    public function getActionsInstance(): Collection
+    {
+        return $this->_actionCollectionFactory->create();
+    }
+
+    /**
+     * Getter for conditions field set ID
+     *
+     * @param string $formName
+     * @return string
+     */
+    public function getConditionsFieldSetId(string $formName = ''): string
+    {
+        return $formName . 'rule_conditions_fieldset_' . $this->getId();
     }
 }

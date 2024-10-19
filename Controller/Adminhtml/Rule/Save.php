@@ -18,6 +18,7 @@ use Magento\Framework\Stdlib\DateTime\Filter\Date;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ObjectManager;
 use Space\SalesCountdown\Model\Rule;
+use Space\SalesCountdown\Model\Rule\Source\IsActive;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
@@ -153,7 +154,7 @@ class Save extends Action implements HttpPostActionInterface
     private function filterData(array $data): array
     {
         if (isset($data['is_active']) && $data['is_active'] === 'true') {
-            $data['is_active'] = Rule::STATUS_ENABLED;
+            $data['is_active'] = IsActive::STATUS_ENABLED;
         }
         if (empty($data['rule_id'])) {
             $data['rule_id'] = null;
