@@ -168,7 +168,7 @@ class Conditions extends Generic implements TabInterface
         $conditionsFieldSetId = $model->getConditionsFieldSetId($formName);
 
         $newChildUrl = $this->getUrl(
-            'catalog_rule/promo_catalog/newConditionHtml/form/' . $conditionsFieldSetId,
+            'sales_countdown/rule/newConditionHtml/form/' . $conditionsFieldSetId,
             ['form_namespace' => $formName]
         );
 

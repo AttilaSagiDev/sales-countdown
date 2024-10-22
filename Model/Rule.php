@@ -8,28 +8,28 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model;
 
-use Magento\CatalogRule\Model\Rule\Action\Collection;
-use Magento\CatalogRule\Model\Rule\Action\CollectionFactory as RuleCollectionFactory;
-use Magento\CatalogRule\Model\Rule\Condition\CombineFactory;
-use Magento\Framework\Api\AttributeValueFactory;
-use Magento\Framework\Api\ExtensionAttributesFactory;
-use Magento\Framework\Data\Collection\AbstractDb;
-use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Model\Context;
-use Magento\Framework\Model\ResourceModel\AbstractResource;
-use Magento\Framework\Registry;
-use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Rule\Model\AbstractModel;
-use Magento\Rule\Model\Condition\Combine;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\CatalogRule\Model\Rule\Condition\CombineFactory;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Framework\Serialize\Serializer\Json;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
+use Magento\Rule\Model\Condition\Combine;
+use Magento\Rule\Model\Action\Collection;
 
 /**
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Rule extends AbstractModel implements RuleInterface, IdentityInterface
+class Rule extends AbstractModel implements RuleInterface, IdentityInterface // NOSONAR
 {
     /**
      * Rule cache tag
@@ -53,19 +53,13 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * @var CombineFactory
      */
-    protected CombineFactory $_combineFactory;
-
-    /**
-     * @var RuleCollectionFactory
-     */
-    protected RuleCollectionFactory $_actionCollectionFactory;
+    protected CombineFactory $combineFactory;
 
     /**
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param CombineFactory $combineFactory
-     * @param RuleCollectionFactory $actionCollectionFactory
      * @param TimezoneInterface $localeDate
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
@@ -79,7 +73,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
         Registry $registry,
         FormFactory $formFactory,
         CombineFactory $combineFactory,
-        RuleCollectionFactory $actionCollectionFactory,
         TimezoneInterface $localeDate,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
@@ -88,8 +81,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
         AttributeValueFactory $customAttributeFactory = null,
         Json $serializer = null
     ) {
-        $this->_combineFactory = $combineFactory;
-        $this->_actionCollectionFactory = $actionCollectionFactory;
+        $this->combineFactory = $combineFactory;
         parent::__construct(
             $context,
             $registry,
@@ -302,17 +294,17 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     public function getConditionsInstance(): Combine
     {
-        return $this->_combineFactory->create();
+        return $this->combineFactory->create();
     }
 
     /**
-     * Getter for rule actions collection
+     * Getter for rule actions collection instance
      *
-     * @return Collection
+     * @return null|Collection
      */
-    public function getActionsInstance(): Collection
+    public function getActionsInstance(): ?Collection
     {
-        return $this->_actionCollectionFactory->create();
+        return null;
     }
 
     /**
