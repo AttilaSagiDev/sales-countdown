@@ -140,7 +140,7 @@ class Conditions extends Generic implements TabInterface
      */
     protected function _prepareForm(): Conditions
     {
-        $model = $this->_coreRegistry->registry('current_promo_catalog_rule');
+        $model = $this->_coreRegistry->registry('current_sales_countdown_rule');
 
         $form = $this->addTabToForm($model);
         $this->setForm($form);

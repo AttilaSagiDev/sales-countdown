@@ -17,10 +17,7 @@ interface RuleInterface
     public const RULE_ID = 'rule_id';
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
-    public const FROM_DATE = 'from_date';
-    public const TO_DATE = 'to_date';
     public const IS_ACTIVE = 'is_active';
-    public const CONDITIONS_SERIALIZED = 'conditions_serialized';
     public const SORT_ORDER = 'sort_order';
 
     /**
@@ -45,32 +42,11 @@ interface RuleInterface
     public function getDescription(): ?string;
 
     /**
-     * Get from date
-     *
-     * @return string|null
-     */
-    public function getFromDate(): ?string;
-
-    /**
-     * Get to date
-     *
-     * @return string|null
-     */
-    public function getToDate(): ?string;
-
-    /**
      * Get is active
      *
      * @return bool
      */
     public function isActive(): bool;
-
-    /**
-     * Get conditions serialized
-     *
-     * @return string|null
-     */
-    public function getConditionsSerialized(): ?string;
 
     /**
      * Get sort order
@@ -104,36 +80,12 @@ interface RuleInterface
     public function setDescription(string $description): RuleInterface;
 
     /**
-     * Set from date
-     *
-     * @param string $fromDate
-     * @return RuleInterface
-     */
-    public function setFromDate(string $fromDate): RuleInterface;
-
-    /**
-     * Set to date
-     *
-     * @param string|null $toDate
-     * @return RuleInterface
-     */
-    public function setToDate(string|null $toDate): RuleInterface;
-
-    /**
      * Set is active
      *
      * @param bool $isActive
      * @return RuleInterface
      */
     public function setIsActive(bool $isActive): RuleInterface;
-
-    /**
-     * Set conditions serialized
-     *
-     * @param string $conditionsSerialized
-     * @return RuleInterface
-     */
-    public function setConditionsSerialized(string $conditionsSerialized): RuleInterface;
 
     /**
      * Set sort order

@@ -106,7 +106,7 @@ class Edit extends Action implements HttpGetActionInterface
             $rule->getConditionsFieldSetId($rule->getConditions()->getFormName())
         );
 
-        $this->coreRegistry->register('current_promo_catalog_rule', $rule);
+        $this->coreRegistry->register('current_sales_countdown_rule', $rule);
 
         $resultPage->addBreadcrumb(
             $ruleId ? __('Edit Rule') : __('New Rule'), // NOSONAR

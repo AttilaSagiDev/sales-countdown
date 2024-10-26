@@ -9,9 +9,8 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Block\Adminhtml\Rule\Edit;
 
 use Magento\Backend\Block\Widget\Context;
-use Space\SalesCountdown\Api\RuleRepositoryInterface;
+use Magento\Framework\Registry;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 class GenericButton
 {
@@ -21,22 +20,24 @@ class GenericButton
     protected Context $context;
 
     /**
-     * @var RuleRepositoryInterface
+     * Registry
+     *
+     * @var Registry
      */
-    protected RuleRepositoryInterface $ruleRepository;
+    protected $registry;
 
     /**
      * Constructor
      *
      * @param Context $context
-     * @param RuleRepositoryInterface $ruleRepository
+     * @param Registry $registry
      */
     public function __construct(
         Context $context,
-        RuleRepositoryInterface $ruleRepository
+        Registry $registry
     ) {
         $this->context = $context;
-        $this->ruleRepository = $ruleRepository;
+        $this->registry = $registry;
     }
 
     /**
@@ -48,15 +49,8 @@ class GenericButton
      */
     public function getRuleId(): ?int
     {
-        try {
-            return $this->ruleRepository->getById(
-                (int)$this->context->getRequest()->getParam('rule_id')
-            )->getId();
-        // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock
-        } catch (NoSuchEntityException $e) { // NOSONAR
-        }
-
-        return null;
+        $rule = $this->registry->registry('current_sales_countdown_rule');
+        return $rule ? $rule->getId() : null;
     }
 
     /**

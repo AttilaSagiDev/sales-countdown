@@ -11,7 +11,7 @@ namespace Space\SalesCountdown\Model;
 use Magento\Rule\Model\AbstractModel;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
-use Magento\CatalogRule\Model\Rule\Condition\CombineFactory;
+use Space\SalesCountdown\Model\Rule\Condition\CombineFactory;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
@@ -51,9 +51,23 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     protected $_eventPrefix = 'sales_countdown_rule'; // NOSONAR
 
     /**
+     * Parameter name in event
+     *
+     * In observe method you can use $observer->getEvent()->getRule() in this case
+     *
+     * @var string
+     */
+    protected $_eventObject = 'rule'; // NOSONAR
+
+    /**
      * @var CombineFactory
      */
     protected CombineFactory $combineFactory;
+
+    /**
+     * @var \Magento\CatalogRule\Model\Rule\Action\CollectionFactory
+     */
+    protected $_actionCollectionFactory;
 
     /**
      * @param Context $context
@@ -73,6 +87,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
         Registry $registry,
         FormFactory $formFactory,
         CombineFactory $combineFactory,
+        \Magento\CatalogRule\Model\Rule\Action\CollectionFactory $actionCollectionFactory,
         TimezoneInterface $localeDate,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
@@ -82,6 +97,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
         Json $serializer = null
     ) {
         $this->combineFactory = $combineFactory;
+        $this->_actionCollectionFactory = $actionCollectionFactory;
         parent::__construct(
             $context,
             $registry,
@@ -140,26 +156,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     }
 
     /**
-     * Get from date
-     *
-     * @return string|null
-     */
-    public function getFromDate(): ?string
-    {
-        return $this->getData(self::FROM_DATE);
-    }
-
-    /**
-     * Get to date
-     *
-     * @return string|null
-     */
-    public function getToDate(): ?string
-    {
-        return $this->getData(self::TO_DATE);
-    }
-
-    /**
      * Get is active
      *
      * @return bool
@@ -170,16 +166,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     }
 
     /**
-     * Get conditions serialized
-     *
-     * @return string|null
-     */
-    public function getConditionsSerialized(): ?string
-    {
-        return $this->getData(self::CONDITIONS_SERIALIZED);
-    }
-
-    /**
      * Get sort order
      *
      * @return int
@@ -187,6 +173,26 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     public function getSortOrder(): int
     {
         return (int)$this->getData(self::SORT_ORDER);
+    }
+
+    /**
+     * Get from date
+     *
+     * @return string
+     */
+    public function getFromDate(): string
+    {
+        return $this->getData('from_date');
+    }
+
+    /**
+     * Get to date
+     *
+     * @return string
+     */
+    public function getToDate(): string
+    {
+        return $this->getData('to_date');
     }
 
     /**
@@ -202,12 +208,12 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     /**
      * Set rule ID
      *
-     * @param int $ruleId
+     * @param int $value
      * @return RuleInterface
      */
-    public function setId($ruleId): RuleInterface
+    public function setId($value): RuleInterface
     {
-        return $this->setData(self::RULE_ID, $ruleId);
+        return $this->setData(self::RULE_ID, $value);
     }
 
     /**
@@ -233,28 +239,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     }
 
     /**
-     * Set from date
-     *
-     * @param string $fromDate
-     * @return RuleInterface
-     */
-    public function setFromDate(string $fromDate): RuleInterface
-    {
-        return $this->setData(self::FROM_DATE, $fromDate);
-    }
-
-    /**
-     * Set to date
-     *
-     * @param string|null $toDate
-     * @return RuleInterface
-     */
-    public function setToDate(string|null $toDate): RuleInterface
-    {
-        return $this->setData(self::TO_DATE, $toDate);
-    }
-
-    /**
      * Set is active
      *
      * @param bool $isActive
@@ -263,17 +247,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     public function setIsActive(bool $isActive): RuleInterface
     {
         return $this->setData(self::IS_ACTIVE, $isActive);
-    }
-
-    /**
-     * Set conditions serialized
-     *
-     * @param string $conditionsSerialized
-     * @return RuleInterface
-     */
-    public function setConditionsSerialized(string $conditionsSerialized): RuleInterface
-    {
-        return $this->setData(self::CONDITIONS_SERIALIZED, $conditionsSerialized);
     }
 
     /**
@@ -300,11 +273,11 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     /**
      * Getter for rule actions collection instance
      *
-     * @return null|Collection
+     * @return Collection|null
      */
-    public function getActionsInstance(): ?Collection
+    public function getActionsInstance()
     {
-        return null;
+        return $this->_actionCollectionFactory->create();
     }
 
     /**

@@ -8,14 +8,14 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model\ResourceModel;
 
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Rule\Model\ResourceModel\AbstractResource;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\Model\AbstractModel;
 use Exception;
 
-class Rule extends AbstractDb
+class Rule extends AbstractResource
 {
     /**
      * @var EntityManager
@@ -32,7 +32,7 @@ class Rule extends AbstractDb
     public function __construct(
         Context $context,
         EntityManager $entityManager,
-        string $connectionName = null
+        $connectionName = null
     ) {
         $this->entityManager = $entityManager;
         parent::__construct($context, $connectionName);
@@ -47,6 +47,21 @@ class Rule extends AbstractDb
     protected function _construct(): void
     {
         $this->_init(RuleInterface::TABLE_NAME, RuleInterface::RULE_ID);
+    }
+
+    /**
+     * Load an object
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param mixed $value
+     * @param string $field
+     * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function load(\Magento\Framework\Model\AbstractModel $object, $value, $field = null)
+    {
+        $this->entityManager->load($object, $value);
+        return $this;
     }
 
     /**

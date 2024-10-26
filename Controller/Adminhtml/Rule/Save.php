@@ -93,90 +93,101 @@ class Save extends Action implements HttpPostActionInterface
     /**
      * Save action
      *
-     * @return Redirect|ResponseInterface|ResultInterface
+     * @return null|Redirect|ResponseInterface|ResultInterface
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function execute(): Redirect|ResponseInterface|ResultInterface // NOSONAR
+    public function execute(): null|Redirect|ResponseInterface|ResultInterface // NOSONAR
     {
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
-        $data = $this->getRequest()->getPostValue();
-
-        if ($data) {
-            $data = $this->filterData($data);
-            $rule = $this->ruleFactory->create();
-
-            $ruleId = (int)$this->getRequest()->getParam('rule_id');
-            if ($ruleId) {
-                try {
-                    $rule = $this->ruleRepository->getById($ruleId);
-                } catch (LocalizedException $e) {
-                    $this->messageManager->addErrorMessage(__('This rule no longer exists.'));
-                    return $resultRedirect->setPath('*/*/');
-                }
-            }
-
-            $rule->setData($data);
+        if ($this->getRequest()->getPostValue()) {
+            /** @var \Space\SalesCountdown\Model\Rule $model */
+            $model = $this->ruleFactory->create();
 
             try {
                 $this->_eventManager->dispatch(
                     'adminhtml_controller_sales_countdown_rule_prepare_save',
                     ['request' => $this->getRequest()]
                 );
+                $data = $this->getRequest()->getPostValue();
+                if (!$this->getRequest()->getParam('from_date')) {
+                    $data['from_date'] = $this->localeDate->formatDate();
+                }
+                $filterValues = ['from_date' => $this->dateFilter];
+                if ($this->getRequest()->getParam('to_date')) {
+                    $filterValues['to_date'] = $this->dateFilter;
+                }
+                $inputFilter = new FilterInput(
+                    $filterValues,
+                    [],
+                    $data
+                );
+                $data = $inputFilter->getUnescaped();
+                $id = $this->getRequest()->getParam('rule_id');
+                if ($id) {
+                    $model = $this->ruleRepository->getById((int)$id);
+                }
 
-                $this->ruleRepository->save($rule);
+                $validateResult = $model->validateData(new \Magento\Framework\DataObject($data));
+                if ($validateResult !== true) {
+                    foreach ($validateResult as $errorMessage) {
+                        $this->messageManager->addErrorMessage($errorMessage);
+                    }
+                    $this->_getSession()->setPageData($data);
+                    $this->dataPersistor->set('sales_countdown_rule', $data);
+                    $this->_redirect('sales_countdown/*/edit', ['id' => $model->getId()]);
+                    return null;
+                }
+
+                /*echo '<pre>';
+                print_r($data);*/
+
+                if (isset($data['rule'])) {
+                    $data['conditions'] = $data['rule']['conditions'];
+                    unset($data['rule']);
+                }
+
+                unset($data['conditions_serialized']);
+
+                $model->loadPost($data);
+
+                /*print_r($model->getData());
+                print_r($model->getConditions());
+
+                die('stop');*/
+
+                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setPageData($data);
+                $this->dataPersistor->set('sales_countdown_rule', $data);
+
+                $this->ruleRepository->save($model);
+
                 $this->messageManager->addSuccessMessage(__('You saved the rule.'));
+                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setPageData(false);
                 $this->dataPersistor->clear('sales_countdown_rule');
-                return $this->processRuleReturn($rule, $data, $resultRedirect);
+
+                if ($this->getRequest()->getParam('back')) {
+                    $this->_redirect('sales_countdown/*/edit', ['rule_id' => $model->getId()]);
+                    return null;
+                }
+                $this->_redirect('sales_countdown/*/');
+                return null;
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addExceptionMessage(
-                    $e,
-                    __('Something went wrong while saving the rule.')
+                $this->messageManager->addErrorMessage(
+                    __('Something went wrong while saving the rule data. Please review the error log.')
                 );
+                $this->_objectManager->get(\Psr\Log\LoggerInterface::class)->critical($e);
+                $ruleData = $data ?? $this->getRequest()->getPostValue();
+                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setPageData($ruleData);
+                $this->dataPersistor->set('sales_countdown_rule', $ruleData);
+                $this->_redirect('sales_countdown/*/edit', ['rule_id' => $this->getRequest()->getParam('rule_id')]);
+                return null;
             }
-
-            $this->dataPersistor->set('sales_countdown_rule', $data);
-            return $resultRedirect->setPath('*/*/edit', ['rule_id' => $ruleId]);
         }
 
         return $resultRedirect->setPath('*/*/');
-    }
-
-    /**
-     * Filter data
-     *
-     * @param array $data
-     * @return array
-     */
-    private function filterData(array $data): array
-    {
-        if (isset($data['is_active']) && $data['is_active'] === 'true') {
-            $data['is_active'] = IsActive::STATUS_ENABLED;
-        }
-        if (empty($data['rule_id'])) {
-            $data['rule_id'] = null;
-        }
-
-        if (!$this->getRequest()->getParam('from_date')) {
-            $data['from_date'] = $this->localeDate->formatDate();
-        }
-        $filterValues = ['from_date' => $this->dateFilter];
-        if ($this->getRequest()->getParam('to_date')) {
-            $filterValues['to_date'] = $this->dateFilter;
-        } else {
-            $data['to_date'] = null;
-        }
-
-        $inputFilter = new FilterInput(
-            $filterValues,
-            [],
-            $data
-        );
-
-        return $inputFilter->getUnescaped();
     }
 
     /**

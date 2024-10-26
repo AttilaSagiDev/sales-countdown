@@ -31,7 +31,7 @@ class NewConditionHtml extends Action implements HttpPostActionInterface, HttpGe
      */
     public function execute(): void
     {
-        $objectId = $this->getRequest()->getParam('rule_id');
+        $objectId = $this->getRequest()->getParam('id');
         $formNamespace = $this->getRequest()->getParam('form_namespace');
         $types = explode(
             '|',

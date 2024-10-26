@@ -10,18 +10,11 @@ namespace Space\SalesCountdown\Model;
 
 use Space\SalesCountdown\Api\RuleRepositoryInterface;
 use Space\SalesCountdown\Api\Data;
-use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
-use Space\SalesCountdown\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
-use Magento\Framework\Api\DataObjectHelper;
-use Magento\Framework\Reflection\DataObjectProcessor;
-use Space\SalesCountdown\Api\Data\RuleInterfaceFactory;
-use Magento\Framework\EntityManager\HydratorInterface;
-use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Space\SalesCountdown\Api\Data\RuleInterface;
-use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\CouldNotDeleteException;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\ValidatorException;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -29,85 +22,30 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 class RuleRepository implements RuleRepositoryInterface
 {
     /**
-     * @var ResourceRule
+     * @var ResourceModel\Rule
      */
-    private ResourceRule $resource;
+    protected $ruleResource;
 
     /**
      * @var RuleFactory
      */
-    private RuleFactory $ruleFactory;
+    protected $ruleFactory;
 
     /**
-     * @var RuleCollectionFactory
+     * @var array
      */
-    private RuleCollectionFactory $ruleCollectionFactory;
+    private $rules = [];
 
     /**
-     * @var Data\RuleSearchResultsInterfaceFactory
-     */
-    private Data\RuleSearchResultsInterfaceFactory $searchResultsFactory;
-
-    /**
-     * @var DataObjectHelper
-     */
-    private DataObjectHelper $dataObjectHelper;
-
-    /**
-     * @var DataObjectProcessor
-     */
-    private DataObjectProcessor $dataObjectProcessor;
-
-    /**
-     * @var RuleInterfaceFactory
-     */
-    private RuleInterfaceFactory $dataRuleFactory;
-
-    /**
-     * @var CollectionProcessorInterface
-     */
-    private CollectionProcessorInterface $collectionProcessor;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
-
-    /**
-     * Constructor
-     *
-     * @param ResourceRule $resource
+     * @param ResourceModel\Rule $ruleResource
      * @param RuleFactory $ruleFactory
-     * @param RuleInterfaceFactory $dataRuleFactory
-     * @param RuleCollectionFactory $ruleCollectionFactory
-     * @param Data\RuleSearchResultsInterfaceFactory $searchResultsFactory
-     * @param DataObjectHelper $dataObjectHelper
-     * @param DataObjectProcessor $dataObjectProcessor
-     * @param CollectionProcessorInterface|null $collectionProcessor
-     * @param HydratorInterface|null $hydrator
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        ResourceRule $resource,
-        RuleFactory $ruleFactory,
-        RuleInterfaceFactory $dataRuleFactory,
-        RuleCollectionFactory $ruleCollectionFactory,
-        Data\RuleSearchResultsInterfaceFactory $searchResultsFactory,
-        DataObjectHelper $dataObjectHelper,
-        DataObjectProcessor $dataObjectProcessor,
-        CollectionProcessorInterface $collectionProcessor = null,
-        ?HydratorInterface $hydrator = null
+        ResourceModel\Rule $ruleResource,
+        RuleFactory $ruleFactory
     ) {
-        $this->resource = $resource;
+        $this->ruleResource = $ruleResource;
         $this->ruleFactory = $ruleFactory;
-        $this->ruleCollectionFactory = $ruleCollectionFactory;
-        $this->searchResultsFactory = $searchResultsFactory;
-        $this->dataObjectHelper = $dataObjectHelper;
-        $this->dataRuleFactory = $dataRuleFactory;
-        $this->dataObjectProcessor = $dataObjectProcessor;
-        $this->collectionProcessor = $collectionProcessor ?:
-            ObjectManager::getInstance()->get(CollectionProcessorInterface::class);
-        $this->hydrator = $hydrator ?? ObjectManager::getInstance()->get(HydratorInterface::class);
     }
 
     /**
@@ -119,12 +57,21 @@ class RuleRepository implements RuleRepositoryInterface
      */
     public function getById(int $ruleId): Rule
     {
-        $rule = $this->ruleFactory->create();
-        $this->resource->load($rule, $ruleId);
-        if (!$rule->getId()) {
-            throw new NoSuchEntityException(__('The rule with the "%1" ID doesn\'t exist.', $ruleId));
+        if (!isset($this->rules[$ruleId])) {
+            /** @var \Space\SalesCountdown\Model\Rule $rule */
+            $rule = $this->ruleFactory->create();
+
+            /* TODO: change to resource model after entity manager will be fixed */
+            $rule->load($ruleId);
+            if (!$rule->getId()) {
+                throw new NoSuchEntityException(
+                    __('The rule with the "%1" ID wasn\'t found. Verify the ID and try again.', $ruleId)
+                );
+            }
+            $this->rules[$ruleId] = $rule;
         }
-        return $rule;
+
+        return $this->rules[$ruleId];
     }
 
     /**
@@ -137,14 +84,19 @@ class RuleRepository implements RuleRepositoryInterface
      */
     public function save(RuleInterface $rule): Rule
     {
-        if ($rule->getId() && $rule instanceof Rule && !$rule->getOrigData()) {
-            $rule = $this->hydrator->hydrate($this->getById($rule->getId()), $this->hydrator->extract($rule));
+        if ($rule->getId()) {
+            $rule = $this->getById($rule->getId())->addData($rule->getData());
         }
 
         try {
-            $this->resource->save($rule);
-        } catch (\Exception $exception) {
-            throw new CouldNotSaveException(__($exception->getMessage()));
+            $this->ruleResource->save($rule);
+            unset($this->rules[$rule->getId()]);
+        } catch (ValidatorException $e) {
+            throw new CouldNotSaveException(__($e->getMessage()));
+        } catch (\Exception $e) {
+            throw new CouldNotSaveException(
+                __('The "%1" rule was unable to be saved. Please try again.', $rule->getId())
+            );
         }
         return $rule;
     }
@@ -159,7 +111,7 @@ class RuleRepository implements RuleRepositoryInterface
     public function delete(RuleInterface $rule): bool
     {
         try {
-            $this->resource->delete($rule);
+            $this->ruleResource->delete($rule);
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__($exception->getMessage()));
         }
