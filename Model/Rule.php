@@ -12,6 +12,7 @@ use Magento\Rule\Model\AbstractModel;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
 use Space\SalesCountdown\Model\Rule\Condition\CombineFactory;
+use Magento\CatalogRule\Model\Rule\Action\CollectionFactory;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
@@ -65,15 +66,18 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     protected CombineFactory $combineFactory;
 
     /**
-     * @var \Magento\CatalogRule\Model\Rule\Action\CollectionFactory
+     * @var CollectionFactory
      */
     protected $_actionCollectionFactory;
 
     /**
+     * Constructor
+     *
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
      * @param CombineFactory $combineFactory
+     * @param CollectionFactory $actionCollectionFactory
      * @param TimezoneInterface $localeDate
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
@@ -81,13 +85,15 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      * @param ExtensionAttributesFactory|null $extensionFactory
      * @param AttributeValueFactory|null $customAttributeFactory
      * @param Json|null $serializer
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function __construct(
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
         CombineFactory $combineFactory,
-        \Magento\CatalogRule\Model\Rule\Action\CollectionFactory $actionCollectionFactory,
+        CollectionFactory $actionCollectionFactory,
         TimezoneInterface $localeDate,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,

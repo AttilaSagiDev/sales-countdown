@@ -20,8 +20,6 @@ class GenericButton
     protected Context $context;
 
     /**
-     * Registry
-     *
      * @var Registry
      */
     protected Registry $registry;
