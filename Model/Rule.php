@@ -12,7 +12,7 @@ use Magento\Rule\Model\AbstractModel;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
 use Space\SalesCountdown\Model\Rule\Condition\CombineFactory;
-use Magento\CatalogRule\Model\Rule\Action\CollectionFactory;
+use Space\SalesCountdown\Model\Rule\Action\CollectionFactory;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
@@ -63,12 +63,12 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     /**
      * @var CombineFactory
      */
-    protected CombineFactory $combineFactory;
+    private CombineFactory $combineFactory;
 
     /**
      * @var CollectionFactory
      */
-    protected $_actionCollectionFactory;
+    private $actionCollectionFactory;
 
     /**
      * Constructor
@@ -103,7 +103,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
         Json $serializer = null
     ) {
         $this->combineFactory = $combineFactory;
-        $this->_actionCollectionFactory = $actionCollectionFactory;
+        $this->actionCollectionFactory = $actionCollectionFactory;
         parent::__construct(
             $context,
             $registry,
@@ -303,9 +303,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      *
      * @return Collection|null
      */
-    public function getActionsInstance()
+    public function getActionsInstance(): ?Collection
     {
-        return $this->_actionCollectionFactory->create();
+        return $this->actionCollectionFactory->create();
     }
 
     /**

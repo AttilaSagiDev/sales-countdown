@@ -9,12 +9,20 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Model;
 
 use Space\SalesCountdown\Api\RuleRepositoryInterface;
+use Space\SalesCountdown\Api\Data;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
+use Space\SalesCountdown\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
+use Magento\Framework\Api\DataObjectHelper;
+use Magento\Framework\Reflection\DataObjectProcessor;
+use Space\SalesCountdown\Api\Data\RuleInterfaceFactory;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\EntityManager\HydratorInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Space\SalesCountdown\Api\Data\RuleInterface;
+use Magento\Framework\Exception\ValidatorException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Exception\ValidatorException;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -32,20 +40,81 @@ class RuleRepository implements RuleRepositoryInterface
     private RuleFactory $ruleFactory;
 
     /**
+     * @var RuleCollectionFactory
+     */
+    private RuleCollectionFactory $ruleCollectionFactory;
+
+    /**
+     * @var Data\RuleSearchResultsInterfaceFactory
+     */
+    private Data\RuleSearchResultsInterfaceFactory $searchResultsFactory;
+
+    /**
+     * @var DataObjectHelper
+     */
+    private DataObjectHelper $dataObjectHelper;
+
+    /**
+     * @var DataObjectProcessor
+     */
+    private DataObjectProcessor $dataObjectProcessor;
+
+    /**
+     * @var RuleInterfaceFactory
+     */
+    private RuleInterfaceFactory $dataRuleFactory;
+
+    /**
+     * @var CollectionProcessorInterface
+     */
+    private CollectionProcessorInterface $collectionProcessor;
+
+    /**
+     * @var HydratorInterface
+     */
+    private HydratorInterface $hydrator;
+
+    /**
      * @var array
      */
     private array $rules = [];
 
     /**
+     * Constructor
+     *
      * @param ResourceRule $ruleResource
      * @param RuleFactory $ruleFactory
+     * @param RuleInterfaceFactory $dataRuleFactory
+     * @param RuleCollectionFactory $ruleCollectionFactory
+     * @param Data\RuleSearchResultsInterfaceFactory $searchResultsFactory
+     * @param DataObjectHelper $dataObjectHelper
+     * @param DataObjectProcessor $dataObjectProcessor
+     * @param CollectionProcessorInterface|null $collectionProcessor
+     * @param HydratorInterface|null $hydrator
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function __construct(
         ResourceRule $ruleResource,
-        RuleFactory $ruleFactory
+        RuleFactory $ruleFactory,
+        RuleInterfaceFactory $dataRuleFactory,
+        RuleCollectionFactory $ruleCollectionFactory,
+        Data\RuleSearchResultsInterfaceFactory $searchResultsFactory,
+        DataObjectHelper $dataObjectHelper,
+        DataObjectProcessor $dataObjectProcessor,
+        CollectionProcessorInterface $collectionProcessor = null,
+        ?HydratorInterface $hydrator = null
     ) {
         $this->ruleResource = $ruleResource;
         $this->ruleFactory = $ruleFactory;
+        $this->ruleCollectionFactory = $ruleCollectionFactory;
+        $this->searchResultsFactory = $searchResultsFactory;
+        $this->dataObjectHelper = $dataObjectHelper;
+        $this->dataRuleFactory = $dataRuleFactory;
+        $this->dataObjectProcessor = $dataObjectProcessor;
+        $this->collectionProcessor = $collectionProcessor ?:
+            ObjectManager::getInstance()->get(CollectionProcessorInterface::class);
+        $this->hydrator = $hydrator ?? ObjectManager::getInstance()->get(HydratorInterface::class);
     }
 
     /**
@@ -82,8 +151,8 @@ class RuleRepository implements RuleRepositoryInterface
      */
     public function save(RuleInterface $rule): Rule
     {
-        if ($rule->getRuleId()) {
-            $rule = $this->getById($rule->getRuleId())->addData($rule->getData());
+        if ($rule->getRuleId() && $rule instanceof Rule && !$rule->getOrigData()) {
+            $rule = $this->hydrator->hydrate($this->getById($rule->getId()), $this->hydrator->extract($rule));
         }
 
         try {
