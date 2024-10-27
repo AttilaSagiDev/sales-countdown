@@ -29,6 +29,7 @@ use Magento\Rule\Model\Action\Collection;
 /**
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
 class Rule extends AbstractModel implements RuleInterface, IdentityInterface // NOSONAR
 {
@@ -68,7 +69,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     /**
      * @var CollectionFactory
      */
-    private $actionCollectionFactory;
+    private CollectionFactory $actionCollectionFactory;
 
     /**
      * Constructor
@@ -86,7 +87,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      * @param AttributeValueFactory|null $customAttributeFactory
      * @param Json|null $serializer
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
-     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function __construct(
         Context $context,
