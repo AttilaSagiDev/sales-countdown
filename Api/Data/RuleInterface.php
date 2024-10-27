@@ -17,10 +17,9 @@ interface RuleInterface
     public const RULE_ID = 'rule_id';
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
-    public const FROM_DATE = 'from_date';
+    public const FROM_DATE = 'form_date';
     public const TO_DATE = 'to_date';
     public const IS_ACTIVE = 'is_active';
-    public const CONDITIONS_SERIALIZED = 'conditions_serialized';
     public const SORT_ORDER = 'sort_order';
 
     /**
@@ -28,7 +27,7 @@ interface RuleInterface
      *
      * @return int|null
      */
-    public function getId(): ?int;
+    public function getRuleId(): ?int;
 
     /**
      * Get name
@@ -66,13 +65,6 @@ interface RuleInterface
     public function isActive(): bool;
 
     /**
-     * Get conditions serialized
-     *
-     * @return string|null
-     */
-    public function getConditionsSerialized(): ?string;
-
-    /**
      * Get sort order
      *
      * @return int
@@ -85,7 +77,7 @@ interface RuleInterface
      * @param int $ruleId
      * @return RuleInterface
      */
-    public function setId(int $ruleId): RuleInterface;
+    public function setRuleId(int $ruleId): RuleInterface;
 
     /**
      * Set name
@@ -104,20 +96,20 @@ interface RuleInterface
     public function setDescription(string $description): RuleInterface;
 
     /**
-     * Set from date
+     * Set form date
      *
-     * @param string $fromDate
+     * @param string $formDate
      * @return RuleInterface
      */
-    public function setFromDate(string $fromDate): RuleInterface;
+    public function setFromDate(string $formDate): RuleInterface;
 
     /**
      * Set to date
      *
-     * @param string|null $toDate
+     * @param string $toDate
      * @return RuleInterface
      */
-    public function setToDate(string|null $toDate): RuleInterface;
+    public function setToDate(string $toDate): RuleInterface;
 
     /**
      * Set is active
@@ -126,14 +118,6 @@ interface RuleInterface
      * @return RuleInterface
      */
     public function setIsActive(bool $isActive): RuleInterface;
-
-    /**
-     * Set conditions serialized
-     *
-     * @param string $conditionsSerialized
-     * @return RuleInterface
-     */
-    public function setConditionsSerialized(string $conditionsSerialized): RuleInterface;
 
     /**
      * Set sort order

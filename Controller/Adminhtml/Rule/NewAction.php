@@ -13,8 +13,8 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Backend\Model\View\Result\ForwardFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Controller\Result\Forward;
+use Magento\Framework\Controller\ResultInterface;
 
 class NewAction extends Action implements HttpGetActionInterface
 {
@@ -49,7 +49,7 @@ class NewAction extends Action implements HttpGetActionInterface
      *
      * @return ResponseInterface|Forward|ResultInterface
      */
-    public function execute(): ResultInterface|ResponseInterface|Forward
+    public function execute(): ResponseInterface|Forward|ResultInterface
     {
         $resultForward = $this->resultForwardFactory->create();
         return $resultForward->forward('edit');

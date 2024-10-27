@@ -7,6 +7,11 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Space\SalesCountdown\Model\ResourceModel\Rule">
+        <arguments>
+            <argument name="eventManager" xsi:type="object">Magento\Framework\Event\Manager\Proxy</argument>
+        </arguments>
+    </type>
     <preference for="Space\SalesCountdown\Api\Data\ConfigInterface"
                 type="Space\SalesCountdown\Model\Config" />
     <preference for="Space\SalesCountdown\Api\Data\RuleInterface"
@@ -57,6 +62,20 @@
             <argument name="hydrators" xsi:type="array">
                 <item name="Space\SalesCountdown\Api\Data\RuleInterface"
                       xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\Rule\Condition\Combine">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="form_name" xsi:type="string">sales_countdown_rule_form</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\Rule\Condition\Product">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="form_name" xsi:type="string">sales_countdown_rule_form</item>
             </argument>
         </arguments>
     </type>

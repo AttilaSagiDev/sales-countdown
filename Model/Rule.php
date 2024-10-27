@@ -8,15 +8,30 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model;
 
-use Magento\Framework\Model\AbstractModel;
+use Magento\Rule\Model\AbstractModel;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
+use Space\SalesCountdown\Model\Rule\Condition\CombineFactory;
+use Space\SalesCountdown\Model\Rule\Action\CollectionFactory;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Data\Collection\AbstractDb;
+use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Framework\Serialize\Serializer\Json;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
+use Magento\Rule\Model\Condition\Combine;
+use Magento\Rule\Model\Action\Collection;
 
 /**
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.LongVariable)
  */
-class Rule extends AbstractModel implements RuleInterface, IdentityInterface
+class Rule extends AbstractModel implements RuleInterface, IdentityInterface // NOSONAR
 {
     /**
      * Rule cache tag
@@ -38,6 +53,72 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     protected $_eventPrefix = 'sales_countdown_rule'; // NOSONAR
 
     /**
+     * Parameter name in event
+     *
+     * In observe method you can use $observer->getEvent()->getRule() in this case
+     *
+     * @var string
+     */
+    protected $_eventObject = 'rule'; // NOSONAR
+
+    /**
+     * @var CombineFactory
+     */
+    private CombineFactory $combineFactory;
+
+    /**
+     * @var CollectionFactory
+     */
+    private CollectionFactory $actionCollectionFactory;
+
+    /**
+     * Constructor
+     *
+     * @param Context $context
+     * @param Registry $registry
+     * @param FormFactory $formFactory
+     * @param CombineFactory $combineFactory
+     * @param CollectionFactory $actionCollectionFactory
+     * @param TimezoneInterface $localeDate
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
+     * @param ExtensionAttributesFactory|null $extensionFactory
+     * @param AttributeValueFactory|null $customAttributeFactory
+     * @param Json|null $serializer
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        CombineFactory $combineFactory,
+        CollectionFactory $actionCollectionFactory,
+        TimezoneInterface $localeDate,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
+        array $data = [],
+        ExtensionAttributesFactory $extensionFactory = null,
+        AttributeValueFactory $customAttributeFactory = null,
+        Json $serializer = null
+    ) {
+        $this->combineFactory = $combineFactory;
+        $this->actionCollectionFactory = $actionCollectionFactory;
+        parent::__construct(
+            $context,
+            $registry,
+            $formFactory,
+            $localeDate,
+            $resource,
+            $resourceCollection,
+            $data,
+            $extensionFactory,
+            $customAttributeFactory,
+            $serializer
+        );
+    }
+
+    /**
      * Constructor
      *
      * @return void
@@ -45,7 +126,9 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     protected function _construct(): void
     {
+        parent::_construct();
         $this->_init(ResourceRule::class);
+        $this->setIdFieldName('rule_id');
     }
 
     /**
@@ -53,7 +136,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      *
      * @return int|null
      */
-    public function getId(): ?int
+    public function getRuleId(): ?int
     {
         return (int)$this->getData(self::RULE_ID);
     }
@@ -79,7 +162,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     }
 
     /**
-     * Get from date
+     * Get form date
      *
      * @return string|null
      */
@@ -109,16 +192,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     }
 
     /**
-     * Get conditions serialized
-     *
-     * @return string|null
-     */
-    public function getConditionsSerialized(): ?string
-    {
-        return $this->getData(self::CONDITIONS_SERIALIZED);
-    }
-
-    /**
      * Get sort order
      *
      * @return int
@@ -135,7 +208,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      */
     public function getIdentities(): array
     {
-        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG . '_' . $this->getId()];
+        return [self::CACHE_TAG . '_' . $this->getRuleId(), self::CACHE_TAG . '_' . $this->getRuleId()];
     }
 
     /**
@@ -144,7 +217,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
      * @param int $ruleId
      * @return RuleInterface
      */
-    public function setId($ruleId): RuleInterface
+    public function setRuleId(int $ruleId): RuleInterface
     {
         return $this->setData(self::RULE_ID, $ruleId);
     }
@@ -174,21 +247,21 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     /**
      * Set from date
      *
-     * @param string $fromDate
+     * @param string $formDate
      * @return RuleInterface
      */
-    public function setFromDate(string $fromDate): RuleInterface
+    public function setFromDate(string $formDate): RuleInterface
     {
-        return $this->setData(self::FROM_DATE, $fromDate);
+        return $this->setData(self::FROM_DATE, $formDate);
     }
 
     /**
-     * Set to date
+     * Set from date
      *
-     * @param string|null $toDate
+     * @param string $toDate
      * @return RuleInterface
      */
-    public function setToDate(string|null $toDate): RuleInterface
+    public function setToDate(string $toDate): RuleInterface
     {
         return $this->setData(self::TO_DATE, $toDate);
     }
@@ -205,17 +278,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     }
 
     /**
-     * Set conditions serialized
-     *
-     * @param string $conditionsSerialized
-     * @return RuleInterface
-     */
-    public function setConditionsSerialized(string $conditionsSerialized): RuleInterface
-    {
-        return $this->setData(self::CONDITIONS_SERIALIZED, $conditionsSerialized);
-    }
-
-    /**
      * Set sort order
      *
      * @param int $sortOrder
@@ -224,5 +286,36 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface
     public function setSortOrder(int $sortOrder): RuleInterface
     {
         return $this->setData(self::SORT_ORDER, $sortOrder);
+    }
+
+    /**
+     * Getter for rule conditions collection
+     *
+     * @return Combine
+     */
+    public function getConditionsInstance(): Combine
+    {
+        return $this->combineFactory->create();
+    }
+
+    /**
+     * Getter for rule actions collection instance
+     *
+     * @return Collection|null
+     */
+    public function getActionsInstance(): ?Collection
+    {
+        return $this->actionCollectionFactory->create();
+    }
+
+    /**
+     * Getter for conditions field set ID
+     *
+     * @param string $formName
+     * @return string
+     */
+    public function getConditionsFieldSetId(string $formName = ''): string
+    {
+        return $formName . 'rule_conditions_fieldset_' . $this->getRuleId();
     }
 }
