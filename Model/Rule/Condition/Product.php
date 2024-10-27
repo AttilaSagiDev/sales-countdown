@@ -24,7 +24,7 @@ class Product extends AbstractProduct
      * @param CatalogProduct|AbstractModel $model
      * @return bool
      */
-    public function validate(AbstractModel $model): bool
+    public function validate(CatalogProduct|AbstractModel $model): bool // NOSONAR
     {
         $attrCode = $this->getAttribute();
         if ('category_ids' == $attrCode) {
@@ -53,6 +53,7 @@ class Product extends AbstractProduct
      * @param AbstractModel $model
      * @param mixed $oldAttrValue
      * @return void
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
     protected function _restoreOldAttrValue(AbstractModel $model, $oldAttrValue): void
     {
@@ -69,8 +70,9 @@ class Product extends AbstractProduct
      *
      * @param CatalogProduct|AbstractModel $model
      * @return $this
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _setAttributeValue(AbstractModel $model): static
+    protected function _setAttributeValue(CatalogProduct|AbstractModel $model): static
     {
         $storeId = $model->getStoreId();
         $defaultStoreId = Store::DEFAULT_STORE_ID;
@@ -79,7 +81,7 @@ class Product extends AbstractProduct
             return $this;
         }
 
-        $productValues  = $this->_entityAttributeValues[$model->getId()];
+        $productValues = $this->_entityAttributeValues[$model->getId()];
 
         if (!isset($productValues[$storeId]) && !isset($productValues[$defaultStoreId])) {
             return $this;
@@ -101,9 +103,12 @@ class Product extends AbstractProduct
      * @param mixed $value
      * @param CatalogProduct|AbstractModel $model
      * @return mixed
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _prepareDatetimeValue($value, AbstractModel $model): mixed
-    {
+    protected function _prepareDatetimeValue(
+        mixed $value,
+        CatalogProduct|AbstractModel $model
+    ): mixed {
         $attribute = $model->getResource()->getAttribute($this->getAttribute());
         if ($attribute && $attribute->getBackendType() == 'datetime') {
             if (!$value) {
@@ -122,9 +127,12 @@ class Product extends AbstractProduct
      * @param mixed $value
      * @param CatalogProduct|AbstractModel $model
      * @return mixed
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      */
-    protected function _prepareMultiselectValue($value, AbstractModel $model): mixed
-    {
+    protected function _prepareMultiselectValue(
+        mixed $value,
+        CatalogProduct|AbstractModel $model
+    ): mixed {
         $attribute = $model->getResource()->getAttribute($this->getAttribute());
         if ($attribute && $attribute->getFrontendInput() == 'multiselect') {
             $value = strlen($value) ? explode(',', $value) : [];

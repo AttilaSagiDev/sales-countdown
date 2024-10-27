@@ -72,14 +72,14 @@ class DataProvider extends ModifierPoolDataProvider
         $items = $this->collection->getItems();
         /** @var Rule $rule */
         foreach ($items as $rule) {
-            $this->loadedData[$rule->getId()] = $rule->getData();
+            $this->loadedData[$rule->getRuleId()] = $rule->getData();
         }
 
         $data = $this->dataPersistor->get('sales_countdown_rule');
         if (!empty($data)) {
             $rule = $this->collection->getNewEmptyItem();
             $rule->setData($data);
-            $this->loadedData[$rule->getId()] = $rule->getData();
+            $this->loadedData[$rule->getRuleId()] = $rule->getData();
             $this->dataPersistor->clear('sales_countdown_rule');
         }
 

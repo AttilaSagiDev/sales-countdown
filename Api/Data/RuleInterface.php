@@ -17,6 +17,8 @@ interface RuleInterface
     public const RULE_ID = 'rule_id';
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
+    public const FROM_DATE = 'form_date';
+    public const TO_DATE = 'to_date';
     public const IS_ACTIVE = 'is_active';
     public const SORT_ORDER = 'sort_order';
 
@@ -25,7 +27,7 @@ interface RuleInterface
      *
      * @return int|null
      */
-    public function getId(): ?int;
+    public function getRuleId(): ?int;
 
     /**
      * Get name
@@ -40,6 +42,20 @@ interface RuleInterface
      * @return string|null
      */
     public function getDescription(): ?string;
+
+    /**
+     * Get from date
+     *
+     * @return string|null
+     */
+    public function getFromDate(): ?string;
+
+    /**
+     * Get to date
+     *
+     * @return string|null
+     */
+    public function getToDate(): ?string;
 
     /**
      * Get is active
@@ -61,7 +77,7 @@ interface RuleInterface
      * @param int $ruleId
      * @return RuleInterface
      */
-    public function setId(int $ruleId): RuleInterface;
+    public function setRuleId(int $ruleId): RuleInterface;
 
     /**
      * Set name
@@ -78,6 +94,22 @@ interface RuleInterface
      * @return RuleInterface
      */
     public function setDescription(string $description): RuleInterface;
+
+    /**
+     * Set form date
+     *
+     * @param string $formDate
+     * @return RuleInterface
+     */
+    public function setFromDate(string $formDate): RuleInterface;
+
+    /**
+     * Set to date
+     *
+     * @param string $toDate
+     * @return RuleInterface
+     */
+    public function setToDate(string $toDate): RuleInterface;
 
     /**
      * Set is active

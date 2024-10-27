@@ -9,11 +9,11 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Model;
 
 use Space\SalesCountdown\Api\RuleRepositoryInterface;
-use Space\SalesCountdown\Api\Data;
-use Space\SalesCountdown\Api\Data\RuleInterface;
-use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Exception\CouldNotSaveException;
+use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Space\SalesCountdown\Api\Data\RuleInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\ValidatorException;
 
 /**
@@ -22,26 +22,26 @@ use Magento\Framework\Exception\ValidatorException;
 class RuleRepository implements RuleRepositoryInterface
 {
     /**
-     * @var ResourceModel\Rule
+     * @var ResourceRule
      */
-    protected $ruleResource;
+    private ResourceRule $ruleResource;
 
     /**
      * @var RuleFactory
      */
-    protected $ruleFactory;
+    private RuleFactory $ruleFactory;
 
     /**
      * @var array
      */
-    private $rules = [];
+    private array $rules = [];
 
     /**
-     * @param ResourceModel\Rule $ruleResource
+     * @param ResourceRule $ruleResource
      * @param RuleFactory $ruleFactory
      */
     public function __construct(
-        ResourceModel\Rule $ruleResource,
+        ResourceRule $ruleResource,
         RuleFactory $ruleFactory
     ) {
         $this->ruleResource = $ruleResource;
@@ -58,12 +58,10 @@ class RuleRepository implements RuleRepositoryInterface
     public function getById(int $ruleId): Rule
     {
         if (!isset($this->rules[$ruleId])) {
-            /** @var \Space\SalesCountdown\Model\Rule $rule */
             $rule = $this->ruleFactory->create();
 
-            /* TODO: change to resource model after entity manager will be fixed */
-            $rule->load($ruleId);
-            if (!$rule->getId()) {
+            $this->ruleResource->load($rule, $ruleId);
+            if (!$rule->getRuleId()) {
                 throw new NoSuchEntityException(
                     __('The rule with the "%1" ID wasn\'t found. Verify the ID and try again.', $ruleId)
                 );
@@ -84,18 +82,18 @@ class RuleRepository implements RuleRepositoryInterface
      */
     public function save(RuleInterface $rule): Rule
     {
-        if ($rule->getId()) {
-            $rule = $this->getById($rule->getId())->addData($rule->getData());
+        if ($rule->getRuleId()) {
+            $rule = $this->getById($rule->getRuleId())->addData($rule->getData());
         }
 
         try {
             $this->ruleResource->save($rule);
-            unset($this->rules[$rule->getId()]);
+            unset($this->rules[$rule->getRuleId()]);
         } catch (ValidatorException $e) {
             throw new CouldNotSaveException(__($e->getMessage()));
         } catch (\Exception $e) {
             throw new CouldNotSaveException(
-                __('The "%1" rule was unable to be saved. Please try again.', $rule->getId())
+                __('The "%1" rule was unable to be saved. Please try again.', $rule->getRuleId())
             );
         }
         return $rule;

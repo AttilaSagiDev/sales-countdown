@@ -33,7 +33,8 @@
             <updateUrl path="mui/index/render"/>
         </settings>
         <aclResource>Space_SalesCountdown::sales_countdown</aclResource>
-        <dataProvider class="Space\SalesCountdown\Ui\Component\DataProvider" name="sales_countdown_rule_listing_data_source">
+        <dataProvider class="Space\SalesCountdown\Ui\Component\DataProvider"
+                      name="sales_countdown_rule_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>rule_id</primaryFieldName>
@@ -84,7 +85,7 @@
             <settings>
                 <filter>textRange</filter>
                 <label translate="true">ID</label>
-                <sorting>asc</sorting>
+                <sorting>desc</sorting>
             </settings>
         </column>
         <column name="name">
@@ -97,6 +98,7 @@
             <settings>
                 <filter>text</filter>
                 <label translate="true">Description</label>
+                <visible>false</visible>
             </settings>
         </column>
         <column name="is_active" component="Magento_Ui/js/grid/columns/select">

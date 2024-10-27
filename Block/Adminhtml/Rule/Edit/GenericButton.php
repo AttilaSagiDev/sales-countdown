@@ -24,7 +24,7 @@ class GenericButton
      *
      * @var Registry
      */
-    protected $registry;
+    protected Registry $registry;
 
     /**
      * Constructor
@@ -45,12 +45,11 @@ class GenericButton
      *
      * @return int|null
      * @throws LocalizedException
-     * @SuppressWarnings(PHPMD.EmptyCatchBlock)
      */
     public function getRuleId(): ?int
     {
         $rule = $this->registry->registry('current_sales_countdown_rule');
-        return $rule ? $rule->getId() : null;
+        return $rule ? $rule->getRuleId() : null;
     }
 
     /**

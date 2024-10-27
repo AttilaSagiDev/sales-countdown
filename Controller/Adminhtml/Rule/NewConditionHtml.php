@@ -9,11 +9,11 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Controller\Adminhtml\Rule;
 
 use Magento\Backend\App\Action;
-use Space\SalesCountdown\Model\Rule;
-use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
-use Magento\Rule\Model\Condition\AbstractCondition;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Space\SalesCountdown\Model\Rule;
 use Magento\Rule\Model\Condition\ConditionInterface;
+use Magento\Rule\Model\Condition\AbstractCondition;
 
 class NewConditionHtml extends Action implements HttpPostActionInterface, HttpGetActionInterface
 {

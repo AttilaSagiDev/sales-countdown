@@ -16,8 +16,8 @@ use Magento\Framework\Registry;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
 use Magento\Backend\Model\View\Result\Redirect;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Space\SalesCountdown\Model\Rule;
 use Magento\Backend\Model\Session;
@@ -113,7 +113,7 @@ class Edit extends Action implements HttpGetActionInterface
             $ruleId ? __('Edit Rule') : __('New Rule')
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Rules'));
-        $resultPage->getConfig()->getTitle()->prepend($rule->getId() ? $rule->getName() : __('New Rule'));
+        $resultPage->getConfig()->getTitle()->prepend($rule->getRuleId() ? $rule->getName() : __('New Rule'));
 
         return $resultPage;
     }

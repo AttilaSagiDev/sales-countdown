@@ -32,7 +32,7 @@ class Rule extends AbstractResource
     public function __construct(
         Context $context,
         EntityManager $entityManager,
-        $connectionName = null
+        string $connectionName = null
     ) {
         $this->entityManager = $entityManager;
         parent::__construct($context, $connectionName);
@@ -52,14 +52,17 @@ class Rule extends AbstractResource
     /**
      * Load an object
      *
-     * @param \Magento\Framework\Model\AbstractModel $object
+     * @param AbstractModel $object
      * @param mixed $value
      * @param string $field
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function load(\Magento\Framework\Model\AbstractModel $object, $value, $field = null)
-    {
+    public function load(
+        AbstractModel $object,
+        mixed $value,
+        $field = null
+    ): static {
         $this->entityManager->load($object, $value);
         return $this;
     }

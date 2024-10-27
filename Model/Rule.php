@@ -130,7 +130,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      *
      * @return int|null
      */
-    public function getId(): ?int
+    public function getRuleId(): ?int
     {
         return (int)$this->getData(self::RULE_ID);
     }
@@ -156,6 +156,26 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     }
 
     /**
+     * Get form date
+     *
+     * @return string|null
+     */
+    public function getFromDate(): ?string
+    {
+        return $this->getData(self::FROM_DATE);
+    }
+
+    /**
+     * Get to date
+     *
+     * @return string|null
+     */
+    public function getToDate(): ?string
+    {
+        return $this->getData(self::TO_DATE);
+    }
+
+    /**
      * Get is active
      *
      * @return bool
@@ -176,44 +196,24 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     }
 
     /**
-     * Get from date
-     *
-     * @return string
-     */
-    public function getFromDate(): string
-    {
-        return $this->getData('from_date');
-    }
-
-    /**
-     * Get to date
-     *
-     * @return string
-     */
-    public function getToDate(): string
-    {
-        return $this->getData('to_date');
-    }
-
-    /**
      * Get identities
      *
      * @return array
      */
     public function getIdentities(): array
     {
-        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG . '_' . $this->getId()];
+        return [self::CACHE_TAG . '_' . $this->getRuleId(), self::CACHE_TAG . '_' . $this->getRuleId()];
     }
 
     /**
      * Set rule ID
      *
-     * @param int $value
+     * @param int $ruleId
      * @return RuleInterface
      */
-    public function setId($value): RuleInterface
+    public function setRuleId(int $ruleId): RuleInterface
     {
-        return $this->setData(self::RULE_ID, $value);
+        return $this->setData(self::RULE_ID, $ruleId);
     }
 
     /**
@@ -236,6 +236,28 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     public function setDescription(string $description): RuleInterface
     {
         return $this->setData(self::DESCRIPTION, $description);
+    }
+
+    /**
+     * Set from date
+     *
+     * @param string $formDate
+     * @return RuleInterface
+     */
+    public function setFromDate(string $formDate): RuleInterface
+    {
+        return $this->setData(self::FROM_DATE, $formDate);
+    }
+
+    /**
+     * Set from date
+     *
+     * @param string $toDate
+     * @return RuleInterface
+     */
+    public function setToDate(string $toDate): RuleInterface
+    {
+        return $this->setData(self::TO_DATE, $toDate);
     }
 
     /**
@@ -288,6 +310,6 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      */
     public function getConditionsFieldSetId(string $formName = ''): string
     {
-        return $formName . 'rule_conditions_fieldset_' . $this->getId();
+        return $formName . 'rule_conditions_fieldset_' . $this->getRuleId();
     }
 }

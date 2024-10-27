@@ -11,25 +11,32 @@ namespace Space\SalesCountdown\Controller\Adminhtml\Rule;
 use Magento\Backend\App\Action;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
-use Space\SalesCountdown\Model\RuleFactory;
-use Space\SalesCountdown\Api\RuleRepositoryInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
+use Space\SalesCountdown\Model\RuleFactory;
+use Space\SalesCountdown\Api\RuleRepositoryInterface;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\ObjectManager;
-use Space\SalesCountdown\Model\Rule;
-use Space\SalesCountdown\Model\Rule\Source\IsActive;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
+use Space\SalesCountdown\Model\Rule;
 use Magento\Framework\Filter\FilterInput;
+use Magento\Framework\DataObject;
+use Magento\Backend\Model\Session;
 use Magento\Framework\Exception\LocalizedException;
+use Psr\Log\LoggerInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Save extends Action implements HttpPostActionInterface
 {
+    /**
+     * Edit url
+     */
+    private const EDIT_URL = 'sales_countdown/*/edit';
+
     /**
      * Authorization level of a basic admin session
      *
@@ -102,7 +109,7 @@ class Save extends Action implements HttpPostActionInterface
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($this->getRequest()->getPostValue()) {
-            /** @var \Space\SalesCountdown\Model\Rule $model */
+            /** @var Rule $model */
             $model = $this->ruleFactory->create();
 
             try {
@@ -124,24 +131,21 @@ class Save extends Action implements HttpPostActionInterface
                     $data
                 );
                 $data = $inputFilter->getUnescaped();
-                $id = $this->getRequest()->getParam('rule_id');
-                if ($id) {
-                    $model = $this->ruleRepository->getById((int)$id);
+                $ruleId = $this->getRequest()->getParam('rule_id');
+                if ($ruleId) {
+                    $model = $this->ruleRepository->getById((int)$ruleId);
                 }
 
-                $validateResult = $model->validateData(new \Magento\Framework\DataObject($data));
+                $validateResult = $model->validateData(new DataObject($data));
                 if ($validateResult !== true) {
                     foreach ($validateResult as $errorMessage) {
                         $this->messageManager->addErrorMessage($errorMessage);
                     }
                     $this->_getSession()->setPageData($data);
                     $this->dataPersistor->set('sales_countdown_rule', $data);
-                    $this->_redirect('sales_countdown/*/edit', ['id' => $model->getId()]);
+                    $this->_redirect(self::EDIT_URL, ['id' => $model->getRuleId()]);
                     return null;
                 }
-
-                /*echo '<pre>';
-                print_r($data);*/
 
                 if (isset($data['rule'])) {
                     $data['conditions'] = $data['rule']['conditions'];
@@ -152,22 +156,17 @@ class Save extends Action implements HttpPostActionInterface
 
                 $model->loadPost($data);
 
-                /*print_r($model->getData());
-                print_r($model->getConditions());
-
-                die('stop');*/
-
-                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setPageData($data);
+                $this->_objectManager->get(Session::class)->setPageData($data);
                 $this->dataPersistor->set('sales_countdown_rule', $data);
 
                 $this->ruleRepository->save($model);
 
                 $this->messageManager->addSuccessMessage(__('You saved the rule.'));
-                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setPageData(false);
+                $this->_objectManager->get(Session::class)->setPageData(false);
                 $this->dataPersistor->clear('sales_countdown_rule');
 
-                if ($this->getRequest()->getParam('back')) {
-                    $this->_redirect('sales_countdown/*/edit', ['rule_id' => $model->getId()]);
+                if ($this->getRequest()->getParam('back') === 'continue') {
+                    $this->_redirect(self::EDIT_URL, ['rule_id' => $model->getId()]);
                     return null;
                 }
                 $this->_redirect('sales_countdown/*/');
@@ -178,39 +177,15 @@ class Save extends Action implements HttpPostActionInterface
                 $this->messageManager->addErrorMessage(
                     __('Something went wrong while saving the rule data. Please review the error log.')
                 );
-                $this->_objectManager->get(\Psr\Log\LoggerInterface::class)->critical($e);
+                $this->_objectManager->get(LoggerInterface::class)->critical($e);
                 $ruleData = $data ?? $this->getRequest()->getPostValue();
-                $this->_objectManager->get(\Magento\Backend\Model\Session::class)->setPageData($ruleData);
+                $this->_objectManager->get(Session::class)->setPageData($ruleData);
                 $this->dataPersistor->set('sales_countdown_rule', $ruleData);
-                $this->_redirect('sales_countdown/*/edit', ['rule_id' => $this->getRequest()->getParam('rule_id')]);
+                $this->_redirect(self::EDIT_URL, ['rule_id' => $this->getRequest()->getParam('rule_id')]);
                 return null;
             }
         }
 
         return $resultRedirect->setPath('*/*/');
-    }
-
-    /**
-     * Process and set the rule return
-     *
-     * @param Rule $rule
-     * @param array $data
-     * @param ResultInterface $resultRedirect
-     * @return ResultInterface
-     */
-    private function processRuleReturn(
-        Rule $rule,
-        array $data,
-        ResultInterface $resultRedirect
-    ): ResultInterface {
-        $redirect = $data['back'] ?? 'close';
-
-        if ($redirect === 'continue') {
-            $resultRedirect->setPath('*/*/edit', ['rule_id' => $rule->getId()]);
-        } elseif ($redirect === 'close') {
-            $resultRedirect->setPath('*/*/');
-        }
-
-        return $resultRedirect;
     }
 }
