@@ -8,11 +8,18 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model\ResourceModel\Rule;
 
-use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Rule\Model\ResourceModel\Rule\Collection\AbstractCollection;
+use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Psr\Log\LoggerInterface;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\DataObject;
+use Magento\Framework\App\ObjectManager;
 use Space\SalesCountdown\Model\Rule;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
@@ -47,19 +54,22 @@ class Collection extends AbstractCollection
     protected $_eventObject = 'sales_countdown_rule'; // NOSONAR
 
     /**
-     * @param \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy
+     * @param EntityFactoryInterface $entityFactory
+     * @param LoggerInterface $logger
+     * @param FetchStrategyInterface $fetchStrategy
      * @param ManagerInterface $eventManager
-     * @param \Magento\Framework\DB\Adapter\AdapterInterface|null $connection
-     * @param \Magento\Framework\Model\ResourceModel\Db\AbstractDb|null $resource
+     * @param AdapterInterface|null $connection
+     * @param AbstractDb|null $resource
+     * @param DataObject|null $associatedEntityMap
      */
     public function __construct(
-        \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
+        EntityFactoryInterface $entityFactory,
+        LoggerInterface $logger,
+        FetchStrategyInterface $fetchStrategy,
         ManagerInterface $eventManager,
-        \Magento\Framework\DB\Adapter\AdapterInterface $connection = null, \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+        AdapterInterface $connection = null,
+        AbstractDb $resource = null,
+        DataObject $associatedEntityMap = null
     ) {
         parent::__construct(
             $entityFactory,
@@ -69,7 +79,10 @@ class Collection extends AbstractCollection
             $connection,
             $resource
         );
-        $this->_associatedEntitiesMap = $this->getAssociatedEntitiesMap();
+        $this->_associatedEntitiesMap = $associatedEntityMap ?? ObjectManager::getInstance()
+            // @phpstan-ignore-next-line - this is a virtual type defined in di.xml
+            ->get(\Space\SalesCountdown\Model\ResourceModel\Rule\AssociatedEntityMap::class)
+            ->getData();
     }
 
     /**
@@ -88,7 +101,7 @@ class Collection extends AbstractCollection
      *
      * @param string $entityType
      * @param string $objectField
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      * @return void
      */
     protected function mapAssociatedEntities(
@@ -133,22 +146,5 @@ class Collection extends AbstractCollection
 
         $this->setFlag('add_websites_to_result', false);
         return parent::_afterLoad();
-    }
-
-    /**
-     * Getter for _associatedEntitiesMap property
-     *
-     * @return array
-     * @deprecated 100.1.0
-     */
-    private function getAssociatedEntitiesMap()
-    {
-        if (!$this->_associatedEntitiesMap) {
-            $this->_associatedEntitiesMap = \Magento\Framework\App\ObjectManager::getInstance()
-                // phpstan:ignore
-                ->get(\Space\SalesCountdown\Model\ResourceModel\Rule\AssociatedEntityMap::class)
-                ->getData();
-        }
-        return $this->_associatedEntitiesMap;
     }
 }

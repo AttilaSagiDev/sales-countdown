@@ -11,10 +11,16 @@ namespace Space\SalesCountdown\Model\ResourceModel;
 use Magento\Rule\Model\ResourceModel\AbstractResource;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Model\ResourceModel\Db\Context;
+use Magento\Framework\DataObject;
+use Magento\Framework\App\ObjectManager;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\Model\AbstractModel;
 use Exception;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ * @SuppressWarnings(PHPMD.LongVariable)
+ */
 class Rule extends AbstractResource
 {
     /**
@@ -23,18 +29,31 @@ class Rule extends AbstractResource
     private EntityManager $entityManager;
 
     /**
+     * Store associated with rule entities information map
+     *
+     * @var array
+     */
+    protected $_associatedEntitiesMap = []; // NOSONAR
+
+    /**
      * Constructor
      *
      * @param Context $context
      * @param EntityManager $entityManager
      * @param string|null $connectionName
+     * @param DataObject|null $associatedEntityMap
      */
     public function __construct(
         Context $context,
         EntityManager $entityManager,
-        string $connectionName = null
+        string $connectionName = null,
+        DataObject $associatedEntityMap = null
     ) {
         $this->entityManager = $entityManager;
+        $this->_associatedEntitiesMap = $associatedEntityMap ?? ObjectManager::getInstance()
+            // @phpstan-ignore-next-line - this is a virtual type defined in di.xml
+            ->get(\Space\SalesCountdown\Model\ResourceModel\Rule\AssociatedEntityMap::class)
+            ->getData();
         parent::__construct($context, $connectionName);
     }
 
@@ -78,6 +97,19 @@ class Rule extends AbstractResource
     {
         $this->entityManager->save($object);
 
+        return $this;
+    }
+
+    /**
+     * Delete the object
+     *
+     * @param AbstractModel $object
+     * @return $this
+     * @throws Exception
+     */
+    public function delete(AbstractModel $object): static
+    {
+        $this->entityManager->delete($object);
         return $this;
     }
 }

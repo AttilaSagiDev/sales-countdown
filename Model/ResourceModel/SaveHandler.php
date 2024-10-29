@@ -12,7 +12,7 @@ use Magento\Framework\EntityManager\Operation\AttributeInterface;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
 use Magento\Framework\EntityManager\MetadataPool;
 
-class ReadHandler implements AttributeInterface
+class SaveHandler implements AttributeInterface
 {
     /**
      * @var ResourceRule
@@ -51,9 +51,14 @@ class ReadHandler implements AttributeInterface
     public function execute($entityType, $entityData, $arguments = []): array
     {
         $linkField = $this->metadataPool->getMetadata($entityType)->getLinkField();
-        $entityId = $entityData[$linkField];
 
-        $entityData['website_ids'] = $this->ruleResource->getWebsiteIds($entityId);
+        if (isset($entityData['website_ids'])) {
+            $websiteIds = $entityData['website_ids'];
+            if (!is_array($websiteIds)) {
+                $websiteIds = explode(',', (string)$websiteIds);
+            }
+            $this->ruleResource->bindRuleToEntity($entityData[$linkField], $websiteIds, 'website');
+        }
 
         return $entityData;
     }

@@ -90,6 +90,8 @@
                 <item name="salesCountdown" xsi:type="array">
                     <item name="Space\SalesCountdown\Api\Data\RuleInterface" xsi:type="array">
                         <item name="read" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\ReadHandler</item>
+                        <item name="create" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\SaveHandler</item>
+                        <item name="update" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\SaveHandler</item>
                     </item>
                 </item>
             </argument>

@@ -131,6 +131,18 @@
                 <label translate="true">Sort Order</label>
             </settings>
         </column>
+        <column name="website_ids" class="Magento\Customer\Ui\Component\Listing\Column\Websites"
+                component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Magento\Store\Model\ResourceModel\Website\Collection"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Web Site</label>
+            </settings>
+        </column>
         <actionsColumn name="actions" class="Space\SalesCountdown\Ui\Component\Listing\Column\RuleActions">
             <settings>
                 <indexField>rule_id</indexField>
