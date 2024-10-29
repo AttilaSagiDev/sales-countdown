@@ -48,18 +48,7 @@
         <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
         <filterSearch name="fulltext"/>
-        <filters name="listing_filters">
-            <settings>
-                <templates>
-                    <filters>
-                        <select>
-                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
-                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
-                        </select>
-                    </filters>
-                </templates>
-            </settings>
-        </filters>
+        <filters name="listing_filters" />
         <massaction name="listing_massaction">
             <action name="delete">
                 <settings>
