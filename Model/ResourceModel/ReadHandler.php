@@ -53,6 +53,7 @@ class ReadHandler implements AttributeInterface
         $linkField = $this->metadataPool->getMetadata($entityType)->getLinkField();
         $entityId = $entityData[$linkField];
 
+        $entityData['customer_group_ids'] = $this->ruleResource->getCustomerGroupIds($entityId);
         $entityData['website_ids'] = $this->ruleResource->getWebsiteIds($entityId);
 
         return $entityData;

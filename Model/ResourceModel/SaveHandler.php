@@ -60,6 +60,14 @@ class SaveHandler implements AttributeInterface
             $this->ruleResource->bindRuleToEntity($entityData[$linkField], $websiteIds, 'website');
         }
 
+        if (isset($entityData['customer_group_ids'])) {
+            $customerGroupIds = $entityData['customer_group_ids'];
+            if (!is_array($customerGroupIds)) {
+                $customerGroupIds = explode(',', (string)$customerGroupIds);
+            }
+            $this->ruleResource->bindRuleToEntity($entityData[$linkField], $customerGroupIds, 'customer_group');
+        }
+
         return $entityData;
     }
 }

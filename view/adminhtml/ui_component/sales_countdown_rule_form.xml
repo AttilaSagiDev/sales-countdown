@@ -145,7 +145,29 @@
                 </multiselect>
             </formElements>
         </field>
-        <field name="from_date" sortOrder="50" formElement="date">
+        <field name="customer_group_ids" sortOrder="50" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rule</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Customer Groups</label>
+                <dataScope>customer_group_ids</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Space\SalesCountdown\Model\Rule\CustomerGroupsOptionsProvider"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="from_date" sortOrder="60" formElement="date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -160,7 +182,7 @@
                 <dataScope>from_date</dataScope>
             </settings>
         </field>
-        <field name="to_date" sortOrder="60" formElement="date">
+        <field name="to_date" sortOrder="70" formElement="date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -175,7 +197,7 @@
                 <dataScope>to_date</dataScope>
             </settings>
         </field>
-        <field name="sort_order" sortOrder="70" formElement="input">
+        <field name="sort_order" sortOrder="80" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
