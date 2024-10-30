@@ -18,6 +18,7 @@ use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\DataObject;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Data\Collection\AbstractDb as CollectionDb;
@@ -27,6 +28,7 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 /**
  * Collection for displaying grid of countdown rules
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Collection extends RuleCollection implements SearchResultInterface
 {
@@ -62,6 +64,7 @@ class Collection extends RuleCollection implements SearchResultInterface
      * @param string $model
      * @param AdapterInterface|null $connection
      * @param AbstractDb|null $resource
+     * @param DataObject|null $associatedEntityMap
      * @param TimezoneInterface|null $timeZone
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -78,6 +81,7 @@ class Collection extends RuleCollection implements SearchResultInterface
         string $model = Document::class,
         AdapterInterface|null $connection = null,
         AbstractDb $resource = null,
+        DataObject $associatedEntityMap = null,
         TimezoneInterface $timeZone = null
     ) {
         $this->resourceModel = $resourceModel;
@@ -88,7 +92,8 @@ class Collection extends RuleCollection implements SearchResultInterface
             $fetchStrategy,
             $eventManager,
             $connection,
-            $resource
+            $resource,
+            $associatedEntityMap
         );
         $this->_eventPrefix = $eventPrefix;
         $this->_eventObject = $eventObject;

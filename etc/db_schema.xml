@@ -7,7 +7,7 @@
 -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="sales_countdown_rule" resource="default" engine="innodb" comment="SalesCountdown">
+    <table name="sales_countdown_rule" resource="default" engine="innodb" comment="Sales Countdown Rules">
         <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="true"
                 comment="Entity ID"/>
         <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name"/>
@@ -27,6 +27,27 @@
             <column name="sort_order"/>
             <column name="to_date"/>
             <column name="from_date"/>
+        </index>
+    </table>
+    <table name="sales_countdown_rule_website" resource="default" engine="innodb"
+           comment="Sales Countdown Rules To Websites Relations">
+        <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="false"
+                comment="Rule ID"/>
+        <column xsi:type="smallint" name="website_id" unsigned="true" nullable="false" identity="false"
+                comment="Website ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="website_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SALES_COUNTDOWN_WEBSITE_RULE_ID_SALES_COUNTDOWN_RULE_ID"
+                    table="sales_countdown_rule_website" column="rule_id"
+                    referenceTable="sales_countdown_rule" referenceColumn="rule_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="SALES_COUNTDOWN_WEBSITE_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID"
+                    table="sales_countdown_rule_website" column="website_id"
+                    referenceTable="store_website" referenceColumn="website_id" onDelete="CASCADE"/>
+        <index referenceId="SALES_COUNTDOWN_WEBSITE_WEBSITE_ID" indexType="btree">
+            <column name="website_id"/>
         </index>
     </table>
 </schema>
