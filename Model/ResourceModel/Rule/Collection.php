@@ -143,6 +143,7 @@ class Collection extends AbstractCollection
     protected function _afterLoad(): static
     {
         $this->mapAssociatedEntities('website', 'website_ids');
+        $this->mapAssociatedEntities('customer_group', 'customer_group_ids');
 
         $this->setFlag('add_websites_to_result', false);
         return parent::_afterLoad();
