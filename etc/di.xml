@@ -66,13 +66,11 @@
                     <item name="rule_id_field" xsi:type="string">rule_id</item>
                     <item name="entity_id_field" xsi:type="string">website_id</item>
                 </item>
-                <!--
                 <item name="customer_group" xsi:type="array">
                     <item name="associations_table" xsi:type="string">sales_countdown_rule_customer_group</item>
                     <item name="rule_id_field" xsi:type="string">rule_id</item>
                     <item name="entity_id_field" xsi:type="string">customer_group_id</item>
                 </item>
-                -->
             </argument>
         </arguments>
     </virtualType>

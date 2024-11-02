@@ -13,6 +13,7 @@ use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
 use Space\SalesCountdown\Model\Rule\Condition\CombineFactory;
 use Space\SalesCountdown\Model\Rule\Action\CollectionFactory;
+use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
@@ -22,13 +23,14 @@ use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Api\ExtensionAttributesFactory;
 use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\Serialize\Serializer\Json;
-use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
+use Magento\Framework\App\ObjectManager;
 use Magento\Rule\Model\Condition\Combine;
 use Magento\Rule\Model\Action\Collection;
 
 /**
  * @method string getWebsiteIds()
  * @method Rule setWebsiteIds(string $value)
+ * @method Rule setCustomerGroupIds(string $value)
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.LongVariable)
@@ -74,6 +76,11 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     private CollectionFactory $actionCollectionFactory;
 
     /**
+     * @var ResourceRule
+     */
+    private ResourceRule $ruleResourceModel;
+
+    /**
      * Constructor
      *
      * @param Context $context
@@ -88,6 +95,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      * @param ExtensionAttributesFactory|null $extensionFactory
      * @param AttributeValueFactory|null $customAttributeFactory
      * @param Json|null $serializer
+     * @param ResourceRule|null $ruleResourceModel
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
@@ -102,10 +110,12 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
         array $data = [],
         ExtensionAttributesFactory $extensionFactory = null,
         AttributeValueFactory $customAttributeFactory = null,
-        Json $serializer = null
+        Json $serializer = null,
+        ResourceRule $ruleResourceModel = null
     ) {
         $this->combineFactory = $combineFactory;
         $this->actionCollectionFactory = $actionCollectionFactory;
+        $this->ruleResourceModel = $ruleResourceModel ?: ObjectManager::getInstance()->get(ResourceRule::class);
         parent::__construct(
             $context,
             $registry,
@@ -319,5 +329,19 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     public function getConditionsFieldSetId(string $formName = ''): string
     {
         return $formName . 'rule_conditions_fieldset_' . $this->getRuleId();
+    }
+
+    /**
+     * Get sales countdown rule customer group Ids
+     *
+     * @return array|null
+     */
+    public function getCustomerGroupIds(): ?array
+    {
+        if (!$this->hasData('customer_group_ids')) {
+            $customerGroupIds = $this->ruleResourceModel->getCustomerGroupIds($this->getId());
+            $this->setData('customer_group_ids', (array)$customerGroupIds);
+        }
+        return $this->_getData('customer_group_ids');
     }
 }
