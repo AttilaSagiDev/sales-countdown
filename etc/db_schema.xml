@@ -29,26 +29,6 @@
             <column name="from_date"/>
         </index>
     </table>
-    <table name="sales_countdown_rule_group_website" resource="default" engine="innodb"
-           comment="Sales Countdown Group Website">
-        <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="false" default="0"
-                comment="Rule ID"/>
-        <column xsi:type="int" name="customer_group_id" unsigned="true" nullable="false" identity="false"
-                default="0" comment="Customer Group ID"/>
-        <column xsi:type="smallint" name="website_id" unsigned="true" nullable="false" identity="false"
-                default="0" comment="Website ID"/>
-        <constraint xsi:type="primary" referenceId="PRIMARY">
-            <column name="rule_id"/>
-            <column name="customer_group_id"/>
-            <column name="website_id"/>
-        </constraint>
-        <index referenceId="SALES_COUNTDOWN_GROUP_WEBSITE_CUSTOMER_GROUP_ID" indexType="btree">
-            <column name="customer_group_id"/>
-        </index>
-        <index referenceId="SALES_COUNTDOWN_GROUP_WEBSITE_WEBSITE_ID" indexType="btree">
-            <column name="website_id"/>
-        </index>
-    </table>
     <table name="sales_countdown_rule_website" resource="default" engine="innodb"
            comment="Sales Countdown Rules To Websites Relations">
         <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="false"

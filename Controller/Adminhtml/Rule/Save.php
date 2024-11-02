@@ -153,6 +153,7 @@ class Save extends Action implements HttpPostActionInterface
                 }
 
                 unset($data['conditions_serialized']);
+                unset($data['actions_serialized']);
 
                 $model->loadPost($data);
 

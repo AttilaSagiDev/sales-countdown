@@ -17,20 +17,6 @@
             "PRIMARY": true
         }
     },
-    "sales_countdown_rule_group_website": {
-        "column": {
-            "rule_id": true,
-            "customer_group_id": true,
-            "website_id": true
-        },
-        "index": {
-            "SALES_COUNTDOWN_RULE_GROUP_WEBSITE_CUSTOMER_GROUP_ID": true,
-            "SALES_COUNTDOWN_RULE_GROUP_WEBSITE_WEBSITE_ID": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
     "sales_countdown_rule_website": {
         "column": {
             "rule_id": true,

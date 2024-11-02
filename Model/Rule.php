@@ -28,7 +28,7 @@ use Magento\Rule\Model\Condition\Combine;
 use Magento\Rule\Model\Action\Collection;
 
 /**
- * @method string getWebsiteIds()
+ * @method array getWebsiteIds()
  * @method Rule setWebsiteIds(string $value)
  * @method Rule setCustomerGroupIds(string $value)
  * @SuppressWarnings(PHPMD.CamelCasePropertyName)
