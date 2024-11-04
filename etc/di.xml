@@ -109,4 +109,29 @@
             </argument>
         </arguments>
     </type>
+    <virtualType name="SalesCountdownCustomConditionProvider"
+                 type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\ConditionProcessor\CustomConditionProvider">
+        <arguments>
+            <argument name="customConditionProcessors" xsi:type="array">
+                <item name="category_ids" xsi:type="object">Magento\Catalog\Model\Api\SearchCriteria\CollectionProcessor\ConditionProcessor\ProductCategoryCondition</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesCountdownAdvancedFilterProcessor"
+                 type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\AdvancedFilterProcessor">
+        <arguments>
+            <argument name="defaultConditionProcessor" xsi:type="object">Magento\Catalog\Model\Api\SearchCriteria\CollectionProcessor\ConditionProcessor\DefaultCondition</argument>
+            <argument name="customConditionProvider" xsi:type="object">SalesCountdownCustomConditionProvider</argument>
+        </arguments>
+    </virtualType>
+    <type name="Space\SalesCountdown\Model\Catalog\Product\ConditionsToCollectionApplier">
+        <arguments>
+            <argument name="searchCriteriaProcessor" xsi:type="object">SalesCountdownAdvancedFilterProcessor</argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\Rule\Condition\MappableConditionsProcessor">
+        <arguments>
+            <argument name="customConditionProvider" xsi:type="object">SalesCountdownCustomConditionProvider</argument>
+        </arguments>
+    </type>
 </config>
