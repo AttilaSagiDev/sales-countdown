@@ -77,8 +77,8 @@ class CalculateCountdown implements CalculateCountdownInterface
 
         $timeEnd = microtime(true);
         $executionTime = ($timeEnd - $timeStart);
-        $this->logger->info('Sales Countdown:');
-        $this->logger->info('Time: ' . $executionTime);
+        $this->logger->debug('Sales Countdown:');
+        $this->logger->debug('Time: ' . $executionTime);
 
         return $salesCountdown;
     }
