@@ -54,13 +54,14 @@ class RuleRepositorySave
         RuleInterface $result,
         RuleInterface $rule
     ): RuleInterface {
-        $ruleId = $rule->getId();
-
-        $this->logger->debug('--- RuleRepositorySave ---');
-        $this->logger->debug('Rule Id: ' . $ruleId);
-        $productIds = $this->catalogProducts->getMatchingProductIds($rule);
-        $this->logger->debug('Size: ' . count($productIds));
-        //$this->logger->debug('Content: ' . print_r($productIds, true));
+        if ($rule->isActive()) {
+            $ruleId = $rule->getId();
+            $this->logger->debug('--- RuleRepositorySave ---');
+            $this->logger->debug('Rule Id: ' . $ruleId);
+            $productIds = $this->catalogProducts->getMatchingProductIds($rule);
+            $this->logger->debug('Size: ' . count($productIds));
+            //$this->logger->debug('Contents: ' . print_r($productIds, true));
+        }
 
         return $result;
     }
