@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Plugin\Model;
 
 use Space\SalesCountdown\Model\Catalog\Product\CatalogProducts;
+use Space\SalesCountdown\Model\Catalog\Product\HandleRuleProduct;
 use Psr\Log\LoggerInterface;
 use Space\SalesCountdown\Model\RuleRepository;
 use Space\SalesCountdown\Api\Data\RuleInterface;
@@ -22,6 +23,11 @@ class RuleRepositorySave
     private CatalogProducts $catalogProducts;
 
     /**
+     * @var HandleRuleProduct
+     */
+    private HandleRuleProduct $handleRuleProduct;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -30,13 +36,16 @@ class RuleRepositorySave
      * Constructor
      *
      * @param CatalogProducts $catalogProducts
+     * @param HandleRuleProduct $handleRuleProduct
      * @param LoggerInterface $logger
      */
     public function __construct(
         CatalogProducts $catalogProducts,
+        HandleRuleProduct $handleRuleProduct,
         LoggerInterface $logger
     ) {
         $this->catalogProducts = $catalogProducts;
+        $this->handleRuleProduct = $handleRuleProduct;
         $this->logger = $logger;
     }
 
@@ -48,19 +57,24 @@ class RuleRepositorySave
      * @param RuleInterface $rule
      * @return RuleInterface
      * @throws LocalizedException
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function afterSave(
-        RuleRepository $subject,
+        RuleRepository $subject, // NOSONAR
         RuleInterface $result,
         RuleInterface $rule
     ): RuleInterface {
         if ($rule->isActive()) {
-            $ruleId = $rule->getId();
-            $this->logger->debug('--- RuleRepositorySave ---');
-            $this->logger->debug('Rule Id: ' . $ruleId);
+            $startTime = microtime(true);
             $productIds = $this->catalogProducts->getMatchingProductIds($rule);
+            if (!empty($productIds)) {
+                $this->handleRuleProduct->execute($rule, $productIds);
+            }
+            $this->logger->debug('--- RuleRepositorySave ---');
+            $this->logger->debug('Rule Id: ' . $rule->getRuleId());
             $this->logger->debug('Size: ' . count($productIds));
-            //$this->logger->debug('Contents: ' . print_r($productIds, true));
+            $this->logger->debug('Time: ' . (microtime(true) - $startTime));
         }
 
         return $result;

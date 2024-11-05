@@ -70,7 +70,7 @@ class CatalogProducts
      * @param StoreManagerInterface $storeManager
      * @param Iterator $resourceIterator
      * @param ProductFactory $productFactory
-     * @param ConditionsToCollectionApplier $conditionsToCollectionApplier
+     * @param ConditionsToCollectionApplier|null $conditionsToCollectionApplier
      */
     public function __construct(
         CollectionFactory $productCollectionFactory,

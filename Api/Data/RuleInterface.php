@@ -17,7 +17,7 @@ interface RuleInterface
     public const RULE_ID = 'rule_id';
     public const NAME = 'name';
     public const DESCRIPTION = 'description';
-    public const FROM_DATE = 'form_date';
+    public const FROM_DATE = 'from_date';
     public const TO_DATE = 'to_date';
     public const IS_ACTIVE = 'is_active';
     public const SORT_ORDER = 'sort_order';
