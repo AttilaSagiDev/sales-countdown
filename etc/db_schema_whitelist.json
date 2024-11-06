@@ -17,20 +17,6 @@
             "PRIMARY": true
         }
     },
-    "sales_countdown_rule_group_website": {
-        "column": {
-            "rule_id": true,
-            "customer_group_id": true,
-            "website_id": true
-        },
-        "index": {
-            "SALES_COUNTDOWN_RULE_GROUP_WEBSITE_CUSTOMER_GROUP_ID": true,
-            "SALES_COUNTDOWN_RULE_GROUP_WEBSITE_WEBSITE_ID": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
     "sales_countdown_rule_website": {
         "column": {
             "rule_id": true,
@@ -57,6 +43,28 @@
             "PRIMARY": true,
             "FK_461D87C8A3B0022D5AFE0F26F2A969B6": true,
             "FK_53CB72B15301F8DF9EAC97F8F8F5A77B": true
+        }
+    },
+    "sales_countdown_rule_product": {
+        "column": {
+            "rule_product_id": true,
+            "rule_id": true,
+            "from_time": true,
+            "to_time": true,
+            "customer_group_id": true,
+            "product_id": true,
+            "website_id": true
+        },
+        "index": {
+            "SALES_COUNTDOWN_RULE_PRODUCT_CUSTOMER_GROUP_ID": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_WEBSITE_ID": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_FROM_TIME": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_TO_TIME": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_A5D17B0393F7CF508BAF9565D353F337": true
         }
     }
 }

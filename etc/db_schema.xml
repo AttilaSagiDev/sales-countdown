@@ -29,26 +29,6 @@
             <column name="from_date"/>
         </index>
     </table>
-    <table name="sales_countdown_rule_group_website" resource="default" engine="innodb"
-           comment="Sales Countdown Group Website">
-        <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="false" default="0"
-                comment="Rule ID"/>
-        <column xsi:type="int" name="customer_group_id" unsigned="true" nullable="false" identity="false"
-                default="0" comment="Customer Group ID"/>
-        <column xsi:type="smallint" name="website_id" unsigned="true" nullable="false" identity="false"
-                default="0" comment="Website ID"/>
-        <constraint xsi:type="primary" referenceId="PRIMARY">
-            <column name="rule_id"/>
-            <column name="customer_group_id"/>
-            <column name="website_id"/>
-        </constraint>
-        <index referenceId="SALES_COUNTDOWN_GROUP_WEBSITE_CUSTOMER_GROUP_ID" indexType="btree">
-            <column name="customer_group_id"/>
-        </index>
-        <index referenceId="SALES_COUNTDOWN_GROUP_WEBSITE_WEBSITE_ID" indexType="btree">
-            <column name="website_id"/>
-        </index>
-    </table>
     <table name="sales_countdown_rule_website" resource="default" engine="innodb"
            comment="Sales Countdown Rules To Websites Relations">
         <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="false"
@@ -90,6 +70,48 @@
                     referenceColumn="customer_group_id" onDelete="CASCADE"/>
         <index referenceId="SALES_COUNTDOWN_CUSTOMER_GROUP_CUSTOMER_GROUP_ID" indexType="btree">
             <column name="customer_group_id"/>
+        </index>
+    </table>
+    <table name="sales_countdown_rule_product" resource="default" engine="innodb"
+           comment="Sales Countdown Rules To Products Relations">
+        <column xsi:type="int" name="rule_product_id" unsigned="true" nullable="false" identity="true"
+                comment="Rule Product ID"/>
+        <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" identity="false" default="0"
+                comment="Rule ID"/>
+        <column xsi:type="int" name="from_time" unsigned="true" nullable="false" identity="false"
+                default="0" comment="From Time"/>
+        <column xsi:type="int" name="to_time" unsigned="true" nullable="false" identity="false" default="0"
+                comment="To time"/>
+        <column xsi:type="int" name="customer_group_id" unsigned="false" nullable="true" identity="false"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Product ID"/>
+        <column xsi:type="smallint" name="website_id" unsigned="true" nullable="false" identity="false"
+                comment="Website ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_product_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="SCR_PRD_RULE_ID_FR_TIME_TO_TIME_WS_ID_CSTR_GROUP_ID_PRD_ID">
+            <column name="rule_id"/>
+            <column name="from_time"/>
+            <column name="to_time"/>
+            <column name="website_id"/>
+            <column name="customer_group_id"/>
+            <column name="product_id"/>
+        </constraint>
+        <index referenceId="SALES_COUNTDOWN_PRODUCT_CUSTOMER_GROUP_ID" indexType="btree">
+            <column name="customer_group_id"/>
+        </index>
+        <index referenceId="SALES_COUNTDOWN_PRODUCT_WEBSITE_ID" indexType="btree">
+            <column name="website_id"/>
+        </index>
+        <index referenceId="SALES_COUNTDOWN_PRODUCT_FROM_TIME" indexType="btree">
+            <column name="from_time"/>
+        </index>
+        <index referenceId="SALES_COUNTDOWN_PRODUCT_TO_TIME" indexType="btree">
+            <column name="to_time"/>
+        </index>
+        <index referenceId="SALES_COUNTDOWN_PRODUCT_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
         </index>
     </table>
 </schema>

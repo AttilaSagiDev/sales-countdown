@@ -11,6 +11,7 @@ namespace Space\SalesCountdown\Model\Rule\Condition;
 use Magento\Rule\Model\Condition\Combine as ConditionCombine;
 use Space\SalesCountdown\Model\Rule\Condition\ProductFactory;
 use Magento\Rule\Model\Condition\Context;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
 
 class Combine extends ConditionCombine
 {
@@ -66,10 +67,10 @@ class Combine extends ConditionCombine
     /**
      * Collect validate attributes
      *
-     * @param array $productCollection
+     * @param Collection $productCollection
      * @return $this
      */
-    public function collectValidatedAttributes(array $productCollection): static
+    public function collectValidatedAttributes(Collection $productCollection): static
     {
         foreach ($this->getConditions() as $condition) {
             /** @var Product|Combine $condition */
