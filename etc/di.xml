@@ -22,6 +22,10 @@
                 type="Space\SalesCountdown\Model\SalesCountdown" />
     <preference for="Space\SalesCountdown\Api\CalculateCountdownInterface"
                 type="Space\SalesCountdown\Model\Service\CalculateCountdown" />
+    <preference for="Space\SalesCountdown\Api\Data\SalesCountdownRuleInterface"
+                type="Space\SalesCountdown\Model\SalesCountdownRule" />
+    <preference for="Space\SalesCountdown\Api\CalculateCountdownRuleInterface"
+                type="Space\SalesCountdown\Model\Service\CalculateCountdownRule" />
 
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>

@@ -14,4 +14,11 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/salesCountdownRule/:productId" method="GET">
+        <service class="Space\SalesCountdown\Api\CalculateCountdownRuleInterface"
+                 method="calculateByProductId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>
