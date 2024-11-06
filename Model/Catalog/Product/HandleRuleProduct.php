@@ -9,9 +9,8 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Model\Catalog\Product;
 
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-
+use Psr\Log\LoggerInterface;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Store\Model\ScopeInterface;
 
@@ -33,17 +32,25 @@ class HandleRuleProduct
     private TimezoneInterface $timezone;
 
     /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
      * Constructor
      *
      * @param ResourceConnection $resourceConnection
      * @param TimezoneInterface $timezone
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ResourceConnection $resourceConnection,
-        TimezoneInterface $timezone
+        TimezoneInterface $timezone,
+        LoggerInterface $logger
     ) {
         $this->resourceConnection = $resourceConnection;
         $this->timezone = $timezone;
+        $this->logger = $logger;
     }
 
     /**
@@ -65,8 +72,9 @@ class HandleRuleProduct
             $websiteIds = $rule->getWebsiteIds();
             $table = $this->resourceConnection->getTableName(self::TABLE_NAME);
             $ruleId = $rule->getRuleId();
-            $this->removeCurrentRuleProducts($ruleId);
             $customerGroupIds = $rule->getCustomerGroupIds();
+
+            $this->removeCurrentRuleProducts($ruleId);
 
             $rows = [];
             foreach ($websiteIds as $websiteId) {
@@ -84,27 +92,63 @@ class HandleRuleProduct
                         continue;
                     }
 
-                    foreach ($customerGroupIds as $customerGroupId) {
-                        $rows[] = [
-                            RuleInterface::RULE_ID => $ruleId,
-                            'from_time' => $fromTimeInAdminTimeZone,
-                            'to_time' => $toTimeInAdminTimeZone,
-                            'customer_group_id' => $customerGroupId,
-                            'product_id' => $productId,
-                            'website_id' => $websiteId
-                        ];
-                    }
+                    $rows = $this->getDataByCustomerIds(
+                        $rows,
+                        $customerGroupIds,
+                        $ruleId,
+                        $fromTimeInAdminTimeZone,
+                        $toTimeInAdminTimeZone,
+                        $productId,
+                        (int)$websiteId
+                    );
                 }
             }
 
             if (!empty($rows)) {
                 $connection->insertMultiple($table, $rows);
             }
-        } catch (LocalizedException|\Exception $e) {
+        } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Get data by customer Ids
+     *
+     * @param array $rows
+     * @param array $customerGroupIds
+     * @param int $ruleId
+     * @param int $fromTimeInAdminTimeZone
+     * @param int $toTimeInAdminTimeZone
+     * @param int $productId
+     * @param int $websiteId
+     * @return array
+     * @SuppressWarnings(PHPMD.LongVariable)
+     */
+    private function getDataByCustomerIds(
+        array $rows,
+        array $customerGroupIds,
+        int $ruleId,
+        int $fromTimeInAdminTimeZone,
+        int $toTimeInAdminTimeZone,
+        int $productId,
+        int $websiteId
+    ): array {
+        foreach ($customerGroupIds as $customerGroupId) {
+            $rows[] = [
+                RuleInterface::RULE_ID => $ruleId,
+                'from_time' => $fromTimeInAdminTimeZone,
+                'to_time' => $toTimeInAdminTimeZone,
+                'customer_group_id' => $customerGroupId,
+                'product_id' => $productId,
+                'website_id' => $websiteId
+            ];
+        }
+
+        return $rows;
     }
 
     /**
