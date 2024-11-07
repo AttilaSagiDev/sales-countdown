@@ -69,6 +69,36 @@ class Rule extends AbstractResource
     }
 
     /**
+     * Get active rule data based on few filters
+     *
+     * @param int|string $date
+     * @param int $websiteId
+     * @param int $customerGroupId
+     * @param int $productId
+     * @return array
+     */
+    public function getRulesFromProduct(
+        int|string $date,
+        int $websiteId,
+        int $customerGroupId,
+        int $productId
+    ): array {
+        $connection = $this->getConnection();
+        if (is_string($date)) {
+            $date = strtotime($date);
+        }
+        $select = $connection->select()
+            ->from($this->getTable('sales_countdown_rule_product'))
+            ->where('website_id = ?', $websiteId)
+            ->where('customer_group_id = ?', $customerGroupId)
+            ->where('product_id = ?', $productId)
+            ->where('from_time = 0 or from_time < ?', $date)
+            ->where('to_time = 0 or to_time > ?', $date);
+
+        return $connection->fetchAll($select);
+    }
+
+    /**
      * Load an object
      *
      * @param AbstractModel $object
