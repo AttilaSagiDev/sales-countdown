@@ -69,6 +69,23 @@ class Rule extends AbstractResource
     }
 
     /**
+     * Perform actions after object delete
+     *
+     * @param AbstractModel $object
+     * @return $this
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     */
+    protected function _afterDelete(AbstractModel $object): static
+    {
+        $connection = $this->getConnection();
+        $connection->delete(
+            $this->getTable('sales_countdown_rule_product'),
+            ['rule_id=?' => $object->getRuleId()]
+        );
+        return parent::_afterDelete($object);
+    }
+
+    /**
      * Get active rule data based on few filters
      *
      * @param int|string $date
@@ -87,6 +104,7 @@ class Rule extends AbstractResource
         if (is_string($date)) {
             $date = strtotime($date);
         }
+
         $select = $connection->select()
             ->from($this->getTable('sales_countdown_rule_product'))
             ->where('website_id = ?', $websiteId)
