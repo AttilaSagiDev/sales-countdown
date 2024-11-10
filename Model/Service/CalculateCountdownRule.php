@@ -22,6 +22,10 @@ use Magento\Framework\Exception\LocalizedException;
 use Space\SalesCountdown\Model\ResourceModel\Rule\Collection;
 use Magento\Store\Model\ScopeInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.LongVariable)
+ */
 class CalculateCountdownRule implements CalculateCountdownRuleInterface
 {
     /**
@@ -99,9 +103,6 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
         $startTime = microtime(true);
 
         $salesCountdownRule = $this->salesCountdownRuleFactory->create();
-        $salesCountdownRule->setCountdownEndDate('end date');
-        $salesCountdownRule->setCountdownMessage('end message ' . $productId);
-
         try {
             $storeId = (int)$this->storeManager->getStore()->getId();
             $storeId = $storeId === 0 ? $this->storeManager->getDefaultStoreView()->getId() : $storeId;
@@ -125,6 +126,7 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
 
             if (!empty($rulesResult)) {
                 $ruleIds = array_column($rulesResult, RuleInterface::RULE_ID);
+                /** @var Collection $collection */
                 $collection = $this->collectionFactory->create();
                 $collection->addFieldToSelect(
                     [
@@ -137,15 +139,14 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
                 )->addFieldToFilter(RuleInterface::RULE_ID, ['in' => $ruleIds])
                     ->addFieldToFilter(RuleInterface::IS_ACTIVE, ['eq' => 1])
                     ->addOrder(RuleInterface::TO_DATE, 'ASC')
-                    ->addOrder(RuleInterface::FROM_DATE, 'DESC')
-                    ->addOrder(RuleInterface::SORT_ORDER, 'DESC');
-                $this->logger->debug('Collection: ' . print_r($collection->getData(), true));
+                    ->addOrder(RuleInterface::SORT_ORDER, 'ASC');
                 if ($collection->getSize() > 1) {
-                    $this->calculateRulePriority(
-                        $collection->getData(),
-                        'sort_order',
-                        []
-                    );
+                    $rule = $this->calculateRulePriority($collection);
+                    $salesCountdownRule->setCountdownEndDate($rule[RuleInterface::TO_DATE]);
+                    $salesCountdownRule->setCountdownMessage($rule[RuleInterface::NAME]);
+                } else {
+                    $salesCountdownRule->setCountdownEndDate($collection->getFirstItem()->getToDate());
+                    $salesCountdownRule->setCountdownMessage($collection->getFirstItem()->getName());
                 }
             }
             $this->logger->debug('Time: ' . (microtime(true) - $startTime));
@@ -162,44 +163,22 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
     /**
      * Calculate rule priority
      *
-     * @param array $ruleItems
-     * @param string $sortBy
-     * @param array $rules
+     * @param Collection $ruleItems
      * @return array
-     * @deprecated
      */
-    private function calculateRulePriority(
-        array $ruleItems,
-        string $sortBy,
-        array $rules
-    ): array {
-        $this->logger->debug('Rule Items: ' . print_r($ruleItems, true));
-        $this->logger->debug('Sort by: ' . $sortBy);
+    private function calculateRulePriority(Collection $ruleItems): array
+    {
+        $rule = [];
+        $currentSortOrder = $ruleItems->getFirstItem()->getSortOrder();
+        foreach ($ruleItems as $ruleItem) {
+            if ($ruleItem->getSortOrder() <= $currentSortOrder) {
+                $rule[] = $ruleItem->getData();
 
-        $lastValue = -1;
-        foreach ($ruleItems as $key => $item) {
-            if ($lastValue <= (int)$item[$sortBy]) {
-                $rules[$key] = $item;
+                $currentSortOrder = $ruleItem->getSortOrder();
             }
-
-            $lastValue = (int)$item[$sortBy];
-
-            if (isset($rules[$key - 1][$sortBy])
-                && (int)$item[$sortBy] < $lastValue) {
-                unset($rules[$key - 1]);
-                $this->logger->debug('Unset: ' . $key);
-            }
-            $this->logger->debug('Last value: ' . $lastValue);
-            $this->logger->debug('Item value: ' . (int)$item[$sortBy]);
         }
 
-        if (count($rules) > 1) {
-            $this->logger->debug('Rules bigger than one');
-        }
-
-        $this->logger->debug('Rules: ' . print_r($rules, true));
-
-        return $rules;
+        return empty($rule) ? $ruleItems->getFirstItem()->getData() : $rule[0];
     }
 
     /**
