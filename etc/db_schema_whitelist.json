@@ -3,6 +3,7 @@
         "column": {
             "rule_id": true,
             "name": true,
+            "message": true,
             "description": true,
             "from_date": true,
             "to_date": true,

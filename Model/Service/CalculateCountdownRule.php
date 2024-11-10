@@ -100,8 +100,6 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
      */
     public function calculateByProductId(int $productId): SalesCountdownRuleInterface
     {
-        $startTime = microtime(true);
-
         $salesCountdownRule = $this->salesCountdownRuleFactory->create();
         try {
             $storeId = (int)$this->storeManager->getStore()->getId();
@@ -109,14 +107,6 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
             $websiteId = (int)$this->storeManager->getStore($storeId)->getWebsiteId();
             $dateTimeStamp = $this->getDateByWebsiteTimeZone($websiteId);
             $customerGroupId = $this->customerSession->getCustomerGroupId();
-
-            $this->logger->debug('--- calculateByProductId ---');
-            $this->logger->debug('Store Id: ' . $storeId);
-            $this->logger->debug('Website Id: ' . $websiteId);
-            $this->logger->debug('Customer Group ID: ' . $customerGroupId);
-            $this->logger->debug('Date Time: ' . $dateTimeStamp);
-            $this->logger->debug('Product ID: ' . $productId);
-
             $rulesResult = $this->resourceRule->getRulesFromProduct(
                 $dateTimeStamp,
                 $websiteId,
@@ -140,17 +130,19 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
                     ->addFieldToFilter(RuleInterface::IS_ACTIVE, ['eq' => 1])
                     ->addOrder(RuleInterface::TO_DATE, 'ASC')
                     ->addOrder(RuleInterface::SORT_ORDER, 'ASC');
+
                 if ($collection->getSize() > 1) {
                     $rule = $this->calculateRulePriority($collection);
                     $salesCountdownRule->setCountdownEndDate($rule[RuleInterface::TO_DATE]);
-                    $salesCountdownRule->setCountdownMessage($rule[RuleInterface::NAME]);
+                    $salesCountdownRule->setCountdownMessage($rule[RuleInterface::MESSAGE]);
                 } else {
                     $salesCountdownRule->setCountdownEndDate($collection->getFirstItem()->getToDate());
-                    $salesCountdownRule->setCountdownMessage($collection->getFirstItem()->getName());
+                    $salesCountdownRule->setCountdownMessage($collection->getFirstItem()->getMessage());
                 }
+            } else {
+                $salesCountdownRule->setCountdownEndDate('');
+                $salesCountdownRule->setCountdownMessage('');
             }
-            $this->logger->debug('Time: ' . (microtime(true) - $startTime));
-
         } catch (LocalizedException $e) {
             $this->logger->error($e->getMessage());
         } catch (\Exception $e) {
