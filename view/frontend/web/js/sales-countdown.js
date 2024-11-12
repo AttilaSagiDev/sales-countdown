@@ -24,9 +24,12 @@ define([
         _create: function () {
             const productId = this.options.productId || null;
             const storeCode = this.options.storeCode || null;
+            const hasSpecialPriceToDate = parseInt(this.options.hasSpecialPriceToDate) || false;
 
-            if (productId && storeCode) {
-                const serviceUrl = urlBuilder.build('/rest/' + storeCode + '/V1/specialPriceCalculate/' + productId);
+            if (productId && storeCode && hasSpecialPriceToDate) {
+                const serviceUrl = urlBuilder.build(
+                    '/rest/' + storeCode + '/V1/specialPriceCalculate/' + productId
+                );
                 this._callApi(serviceUrl);
             }
         },

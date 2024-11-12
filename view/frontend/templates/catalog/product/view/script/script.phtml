@@ -22,7 +22,8 @@ $viewModel = $block->getData('view_model');
                             "component": "Space_SalesCountdown/js/sales-countdown",
                             "selectorId": "#sales-countdown",
                             "productId": "<?= $escaper->escapeHtml($viewModel->getProductId()) ?>",
-                            "storeCode": "<?= $escaper->escapeHtml($viewModel->getStoreCode()) ?>"
+                            "storeCode": "<?= $escaper->escapeHtml($viewModel->getStoreCode()) ?>",
+                            "hasSpecialPriceToDate" : "<?= $escaper->escapeHtml($viewModel->hasSpecialPriceToDate()) ?>"
                     }
                 }
             }
