@@ -97,7 +97,22 @@
                 <dataScope>name</dataScope>
             </settings>
         </field>
-        <field name="description" sortOrder="30" formElement="textarea">
+        <field name="message" sortOrder="30" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rule</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Message</label>
+                <dataScope>message</dataScope>
+            </settings>
+        </field>
+        <field name="description" sortOrder="40" formElement="textarea">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -119,7 +134,7 @@
                 </tooltip>
             </settings>
         </field>
-        <field name="website_ids" sortOrder="40" formElement="multiselect">
+        <field name="website_ids" sortOrder="50" formElement="multiselect">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -145,7 +160,7 @@
                 </multiselect>
             </formElements>
         </field>
-        <field name="customer_group_ids" sortOrder="50" formElement="multiselect">
+        <field name="customer_group_ids" sortOrder="60" formElement="multiselect">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -167,7 +182,7 @@
                 </multiselect>
             </formElements>
         </field>
-        <field name="from_date" sortOrder="60" formElement="date">
+        <field name="from_date" sortOrder="70" formElement="date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -182,7 +197,7 @@
                 <dataScope>from_date</dataScope>
             </settings>
         </field>
-        <field name="to_date" sortOrder="70" formElement="date">
+        <field name="to_date" sortOrder="80" formElement="date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>
@@ -191,13 +206,14 @@
             <settings>
                 <validation>
                     <rule name="validate-date" xsi:type="boolean">true</rule>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">To</label>
                 <dataScope>to_date</dataScope>
             </settings>
         </field>
-        <field name="sort_order" sortOrder="80" formElement="input">
+        <field name="sort_order" sortOrder="90" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">rule</item>

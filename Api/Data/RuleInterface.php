@@ -16,6 +16,7 @@ interface RuleInterface
     public const TABLE_NAME = 'sales_countdown_rule';
     public const RULE_ID = 'rule_id';
     public const NAME = 'name';
+    public const MESSAGE = 'message';
     public const DESCRIPTION = 'description';
     public const FROM_DATE = 'from_date';
     public const TO_DATE = 'to_date';
@@ -35,6 +36,13 @@ interface RuleInterface
      * @return string|null
      */
     public function getName(): ?string;
+
+    /**
+     * Get message
+     *
+     * @return string|null
+     */
+    public function getMessage(): ?string;
 
     /**
      * Get description
@@ -86,6 +94,14 @@ interface RuleInterface
      * @return RuleInterface
      */
     public function setName(string $name): RuleInterface;
+
+    /**
+     * Set message
+     *
+     * @param string $message
+     * @return RuleInterface
+     */
+    public function setMessage(string $message): RuleInterface;
 
     /**
      * Set description

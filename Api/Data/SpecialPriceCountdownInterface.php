@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Api\Data;
 
-interface SalesCountdownInterface
+interface SpecialPriceCountdownInterface
 {
     /**
      * Constants for keys of data array
@@ -26,7 +26,7 @@ interface SalesCountdownInterface
      * Set countdown end date
      *
      * @param string $endDate
-     * @return SalesCountdownInterface
+     * @return SpecialPriceCountdownInterface
      */
-    public function setCountdownEndDate(string $endDate): SalesCountdownInterface;
+    public function setCountdownEndDate(string $endDate): SpecialPriceCountdownInterface;
 }

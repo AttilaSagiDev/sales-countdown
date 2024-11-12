@@ -8,19 +8,19 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model\Service;
 
-use Space\SalesCountdown\Api\CalculateCountdownInterface;
-use Space\SalesCountdown\Api\Data\SalesCountdownInterfaceFactory;
+use Space\SalesCountdown\Api\SpecialPriceCalculateInterface;
+use Space\SalesCountdown\Model\SpecialPriceCountdownFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Space\SalesCountdown\Api\Data\SalesCountdownInterface;
+use Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface;
 use Magento\Framework\Exception\LocalizedException;
 
-class CalculateCountdown implements CalculateCountdownInterface
+class SpecialPriceCalculate implements SpecialPriceCalculateInterface
 {
     /**
-     * @var SalesCountdownInterfaceFactory
+     * @var SpecialPriceCountdownFactory
      */
-    private SalesCountdownInterfaceFactory $countdownFactory;
+    private SpecialPriceCountdownFactory $countdownFactory;
 
     /**
      * @var ProductRepositoryInterface
@@ -35,12 +35,12 @@ class CalculateCountdown implements CalculateCountdownInterface
     /**
      * Constructor
      *
-     * @param SalesCountdownInterfaceFactory $countdownFactory
+     * @param SpecialPriceCountdownFactory $countdownFactory
      * @param ProductRepositoryInterface $productRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
-        SalesCountdownInterfaceFactory $countdownFactory,
+        SpecialPriceCountdownFactory $countdownFactory,
         ProductRepositoryInterface $productRepository,
         LoggerInterface $logger
     ) {
@@ -53,9 +53,9 @@ class CalculateCountdown implements CalculateCountdownInterface
      * Calculate countdown end date
      *
      * @param int $productId
-     * @return SalesCountdownInterface
+     * @return SpecialPriceCountdownInterface
      */
-    public function calculateEndDate(int $productId): SalesCountdownInterface
+    public function calculateEndDate(int $productId): SpecialPriceCountdownInterface
     {
         $timeStart = microtime(true);
 

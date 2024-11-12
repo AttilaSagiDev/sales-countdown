@@ -66,15 +66,10 @@ class RuleRepositorySave
         RuleInterface $rule
     ): RuleInterface {
         if ($rule->isActive()) {
-            $startTime = microtime(true);
             $productIds = $this->catalogProducts->getMatchingProductIds($rule);
             if (!empty($productIds)) {
                 $this->handleRuleProduct->execute($rule, $productIds);
             }
-            $this->logger->debug('--- RuleRepositorySave ---');
-            $this->logger->debug('Rule Id: ' . $rule->getRuleId());
-            $this->logger->debug('Size: ' . count($productIds));
-            $this->logger->debug('Time: ' . (microtime(true) - $startTime));
         }
 
         return $result;

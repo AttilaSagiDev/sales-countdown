@@ -164,6 +164,16 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     }
 
     /**
+     * Get message
+     *
+     * @return string|null
+     */
+    public function getMessage(): ?string
+    {
+        return $this->getData(self::MESSAGE);
+    }
+
+    /**
      * Get description
      *
      * @return string|null
@@ -243,6 +253,17 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
     public function setName(string $name): RuleInterface
     {
         return $this->setData(self::NAME, $name);
+    }
+
+    /**
+     * Set message
+     *
+     * @param string $message
+     * @return RuleInterface
+     */
+    public function setMessage(string $message): RuleInterface
+    {
+        return $this->setData(self::MESSAGE, $message);
     }
 
     /**
