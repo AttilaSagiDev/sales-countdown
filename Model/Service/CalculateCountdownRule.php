@@ -122,6 +122,7 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
                     [
                         RuleInterface::RULE_ID,
                         RuleInterface::NAME,
+                        RuleInterface::MESSAGE,
                         RuleInterface::FROM_DATE,
                         RuleInterface::TO_DATE,
                         RuleInterface::SORT_ORDER

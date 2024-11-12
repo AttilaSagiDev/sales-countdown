@@ -26,9 +26,9 @@ class SalesCountdownRule extends AbstractModel implements SalesCountdownRuleInte
     /**
      * Get countdown message
      *
-     * @return string
+     * @return string|null
      */
-    public function getCountdownMessage(): string
+    public function getCountdownMessage(): ?string
     {
         return $this->getData(self::COUNTDOWN_MESSAGE);
     }
