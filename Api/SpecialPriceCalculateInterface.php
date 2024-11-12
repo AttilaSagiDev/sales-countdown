@@ -8,15 +8,15 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Api;
 
-use Space\SalesCountdown\Api\Data\SalesCountdownInterface;
+use Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface;
 
-interface CalculateCountdownInterface
+interface SpecialPriceCalculateInterface
 {
     /**
      * Calculate countdown end date
      *
      * @param int $productId
-     * @return \Space\SalesCountdown\Api\Data\SalesCountdownInterface
+     * @return \Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface
      */
-    public function calculateEndDate(int $productId): SalesCountdownInterface;
+    public function calculateEndDate(int $productId): SpecialPriceCountdownInterface;
 }

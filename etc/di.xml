@@ -18,10 +18,10 @@
                 type="Space\SalesCountdown\Model\Rule" />
     <preference for="Space\SalesCountdown\Api\RuleRepositoryInterface"
                 type="Space\SalesCountdown\Model\RuleRepository" />
-    <preference for="Space\SalesCountdown\Api\Data\SalesCountdownInterface"
-                type="Space\SalesCountdown\Model\SalesCountdown" />
-    <preference for="Space\SalesCountdown\Api\CalculateCountdownInterface"
-                type="Space\SalesCountdown\Model\Service\CalculateCountdown" />
+    <preference for="Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface"
+                type="Space\SalesCountdown\Model\SpecialPriceCountdown" />
+    <preference for="Space\SalesCountdown\Api\SpecialPriceCalculateInterface"
+                type="Space\SalesCountdown\Model\Service\SpecialPriceCalculate" />
     <preference for="Space\SalesCountdown\Api\Data\SalesCountdownRuleInterface"
                 type="Space\SalesCountdown\Model\SalesCountdownRule" />
     <preference for="Space\SalesCountdown\Api\CalculateCountdownRuleInterface"

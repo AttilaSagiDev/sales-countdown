@@ -9,9 +9,9 @@ declare(strict_types=1);
 namespace Space\SalesCountdown\Model;
 
 use Magento\Framework\Model\AbstractModel;
-use Space\SalesCountdown\Api\Data\SalesCountdownInterface;
+use Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface;
 
-class SalesCountdown extends AbstractModel implements SalesCountdownInterface
+class SpecialPriceCountdown extends AbstractModel implements SpecialPriceCountdownInterface
 {
     /**
      * Get countdown end date
@@ -27,9 +27,9 @@ class SalesCountdown extends AbstractModel implements SalesCountdownInterface
      * Set countdown end date
      *
      * @param string $endDate
-     * @return SalesCountdownInterface
+     * @return SpecialPriceCountdownInterface
      */
-    public function setCountdownEndDate(string $endDate): SalesCountdownInterface
+    public function setCountdownEndDate(string $endDate): SpecialPriceCountdownInterface
     {
         return $this->setData(self::COUNTDOWN_END_DATE, $endDate);
     }

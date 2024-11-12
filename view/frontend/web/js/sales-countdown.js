@@ -26,7 +26,7 @@ define([
             const storeCode = this.options.storeCode || null;
 
             if (productId && storeCode) {
-                const serviceUrl = urlBuilder.build('/rest/' + storeCode + '/V1/salesCountdown/' + productId);
+                const serviceUrl = urlBuilder.build('/rest/' + storeCode + '/V1/specialPriceCalculate/' + productId);
                 this._callApi(serviceUrl);
             }
         },
