@@ -26,6 +26,38 @@
                     <comment>Enable extension.</comment>
                 </field>
             </group>
+            <group id="sales_countdown_display" translate="label" type="text" sortOrder="20" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Display</label>
+                <field id="show_countdown" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Show Countdown Timer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Please select to show the countdown timer.</comment>
+                </field>
+                <field id="countdown_text" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Notification Text With Countdown Timer</label>
+                    <validate>required-entry</validate>
+                    <comment>
+                        <![CDATA[ The countdown text will be displayed. Please note that the "%c" will be replaced with the countdown timer, so you have to add it in the proper place within the text. You can use only strong HTML tag. ]]>
+                    </comment>
+                    <depends>
+                        <field id="*/sales_countdown_display/show_countdown">1</field>
+                    </depends>
+                </field>
+                <field id="notification_text" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Notification Text Without Countdown Timer</label>
+                    <validate>required-entry</validate>
+                    <comment>
+                        <![CDATA[ The notification text will be displayed. You can use only strong HTML tag. ]]>
+                    </comment>
+                    <depends>
+                        <field id="*/sales_countdown_display/show_countdown">0</field>
+                    </depends>
+                </field>
+            </group>
         </section>
     </system>
 </config>

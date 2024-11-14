@@ -42,4 +42,43 @@ class Config implements ConfigInterface
             ScopeInterface::SCOPE_WEBSITE
         );
     }
+
+    /**
+     * Check to show countdown timer
+     *
+     * @return bool
+     */
+    public function isShowCountdown(): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            ConfigInterface::XML_PATH_SHOW_COUNTDOWN,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get countdown text
+     *
+     * @return string
+     */
+    public function getCountdownText(): string
+    {
+        return $this->scopeConfig->getValue(
+            ConfigInterface::XML_PATH_COUNTDOWN_TEXT,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get notification text
+     *
+     * @return string
+     */
+    public function getNotificationText(): string
+    {
+        return $this->scopeConfig->getValue(
+            ConfigInterface::XML_PATH_NOTIFICATION_TEXT,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }

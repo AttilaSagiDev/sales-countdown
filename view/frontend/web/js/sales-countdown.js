@@ -14,7 +14,8 @@ define([
     $.widget('mage.salesCountdown', {
 
         defaults: {
-            selectorId: '#sales-countdown'
+            selectorId: '#sales-countdown',
+            replaceString: '%c'
         },
 
         /**
@@ -64,13 +65,18 @@ define([
          */
         _displayMessage: function (result) {
             const divSelector = this.options.selectorId || this.defaults.selectorId;
-
             if (typeof $(divSelector) !== "undefined"
                 && typeof result === "object"
                 && result.hasOwnProperty('countdown_end_date')
+                && result.hasOwnProperty('countdown_message')
                 && result.countdown_end_date !== ''
+                && result.countdown_message !== ''
             ) {
-                this._displayCountdown(result.countdown_end_date, divSelector);
+                this._displayCountdown(
+                    result.countdown_end_date,
+                    result.countdown_message,
+                    divSelector
+                );
                 $(divSelector).removeClass('no-display');
             }
         },
@@ -79,22 +85,47 @@ define([
          * Display countdown
          *
          * @param {String} countdownEndDate
+         * @param {String} countdownMessage
          * @param {String} divSelector
          * @private
          * @return void
          */
-        _displayCountdown: function (countdownEndDate, divSelector) {
-            const countDownDate = new Date(countdownEndDate).getTime();
-            $(divSelector).html(this._calculateCountdown(countDownDate).countdownMessage);
-
-            let interVal = setInterval(function () {
-                let countdownMessage = this._calculateCountdown(countDownDate);
-                $(divSelector).html(countdownMessage.countdownMessage);
-                if (countdownMessage.distance < 0) {
-                    clearInterval(interVal);
-                    $(divSelector).removeClass('no-display');
+        _displayCountdown: function (countdownEndDate, countdownMessage, divSelector) {
+            const isShowCountdown = parseInt(this.options.isShowCountdown) || false;
+            if (isShowCountdown) {
+                const countDownDate = new Date(countdownEndDate).getTime();
+                if (countdownMessage.includes(this.defaults.replaceString)) {
+                    $(divSelector).html(
+                        countdownMessage.replace(
+                            this.defaults.replaceString,
+                            this._calculateCountdown(countDownDate).countdownMessage
+                        )
+                    );
+                } else {
+                    $(divSelector).html(this._calculateCountdown(countDownDate).countdownMessage);
                 }
-            }.bind(this), 1000);
+
+                let interVal = setInterval(function () {
+                    let calculatedCountdownMessage = this._calculateCountdown(countDownDate);
+                    if (countdownMessage.includes(this.defaults.replaceString)) {
+                        $(divSelector).html(
+                            countdownMessage.replace(
+                                this.defaults.replaceString,
+                                calculatedCountdownMessage.countdownMessage
+                            )
+                        );
+                    } else {
+                        $(divSelector).html(calculatedCountdownMessage.countdownMessage);
+                    }
+                    if (calculatedCountdownMessage.distance < 0) {
+                        clearInterval(interVal);
+                        $(divSelector).addClass('no-display');
+                    }
+                }.bind(this), 1000);
+            } else {
+                //TODO: do not show message if out of date
+                $(divSelector).html(countdownMessage);
+            }
         },
 
         /**
@@ -113,7 +144,7 @@ define([
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             return {
-                countdownMessage: `${days}d ${hours}h ${minutes}m ${seconds}s`,
+                countdownMessage: `${ days }d ${ hours }h ${ minutes }m ${ seconds }s`,
                 distance: distance
             };
         }

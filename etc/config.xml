@@ -12,6 +12,15 @@
             <sales_countdown_config>
                 <enabled>0</enabled>
             </sales_countdown_config>
+            <sales_countdown_display>
+                <show_countdown>1</show_countdown>
+                <countdown_text>
+                    <![CDATA[Hurry! Sales end: <strong>%c</strong>]]>
+                </countdown_text>
+                <notification_text>
+                    <![CDATA[Hurry, <strong>sale</strong> ends soon!]]>
+                </notification_text>
+            </sales_countdown_display>
         </sales_countdown>
     </default>
 </config>

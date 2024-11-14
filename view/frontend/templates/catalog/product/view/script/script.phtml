@@ -23,7 +23,8 @@ $viewModel = $block->getData('view_model');
                             "selectorId": "#sales-countdown",
                             "productId": "<?= $escaper->escapeHtml($viewModel->getProductId()) ?>",
                             "storeCode": "<?= $escaper->escapeHtml($viewModel->getStoreCode()) ?>",
-                            "hasSpecialPriceToDate" : "<?= $escaper->escapeHtml($viewModel->hasSpecialPriceToDate()) ?>"
+                            "hasSpecialPriceToDate": "<?= $escaper->escapeHtml($viewModel->hasSpecialPriceToDate()) ?>",
+                            "isShowCountdown": "<?= $escaper->escapeHtml($viewModel->isShowCountdown()) ?>"
                     }
                 }
             }
