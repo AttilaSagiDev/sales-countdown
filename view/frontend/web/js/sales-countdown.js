@@ -98,7 +98,7 @@ define([
             }
 
             if (isShowCountdown) {
-                this._getCountdownMessage(countDownDate, countdownMessage, {}, divSelector, true)
+                this._getCountdownMessage(countDownDate, countdownMessage, {}, divSelector, true);
 
                 let interVal = setInterval(function () {
                     let calculatedCountdownMessage = this._calculateCountdown(countDownDate);
