@@ -72,7 +72,6 @@ define([
                 && result.countdown_end_date !== ''
                 && result.countdown_message !== ''
             ) {
-                console.log(result);
                 this._displayCountdown(
                     result.countdown_end_date,
                     result.countdown_message,
@@ -163,6 +162,7 @@ define([
          * @private
          */
         _calculateCountdown: function (countDownDate) {
+            let notificationMessage = '';
             const now = new Date().getTime();
             const distance = countDownDate - now;
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -170,8 +170,16 @@ define([
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+            if (days === 0) {
+                notificationMessage = `${ hours }h ${ minutes }m ${ seconds }s`;
+            } else if (hours === 0) {
+                notificationMessage = `${ minutes }m ${ seconds }s`;
+            } else {
+                notificationMessage = `${ days }d ${ hours }h ${ minutes }m ${ seconds }s`;
+            }
+
             return {
-                countdownMessage: `${ days }d ${ hours }h ${ minutes }m ${ seconds }s`,
+                countdownMessage: notificationMessage,
                 distance: distance
             };
         },
