@@ -72,12 +72,12 @@ define([
                 && result.countdown_end_date !== ''
                 && result.countdown_message !== ''
             ) {
+                console.log(result);
                 this._displayCountdown(
                     result.countdown_end_date,
                     result.countdown_message,
                     divSelector
                 );
-                $(divSelector).removeClass('no-display');
             }
         },
 
@@ -92,39 +92,66 @@ define([
          */
         _displayCountdown: function (countdownEndDate, countdownMessage, divSelector) {
             const isShowCountdown = parseInt(this.options.isShowCountdown) || false;
+            const countDownDate = new Date(countdownEndDate).getTime();
+
+            if (this._isExpired(countDownDate)) {
+                return;
+            }
+
             if (isShowCountdown) {
-                const countDownDate = new Date(countdownEndDate).getTime();
-                if (countdownMessage.includes(this.defaults.replaceString)) {
-                    $(divSelector).html(
-                        countdownMessage.replace(
-                            this.defaults.replaceString,
-                            this._calculateCountdown(countDownDate).countdownMessage
-                        )
-                    );
-                } else {
-                    $(divSelector).html(this._calculateCountdown(countDownDate).countdownMessage);
-                }
+                this._getCountdownMessage(countDownDate, countdownMessage, {}, divSelector, true)
 
                 let interVal = setInterval(function () {
                     let calculatedCountdownMessage = this._calculateCountdown(countDownDate);
-                    if (countdownMessage.includes(this.defaults.replaceString)) {
-                        $(divSelector).html(
-                            countdownMessage.replace(
-                                this.defaults.replaceString,
-                                calculatedCountdownMessage.countdownMessage
-                            )
-                        );
-                    } else {
-                        $(divSelector).html(calculatedCountdownMessage.countdownMessage);
-                    }
+                    this._getCountdownMessage(
+                        countDownDate,
+                        countdownMessage,
+                        calculatedCountdownMessage,
+                        divSelector
+                    );
                     if (calculatedCountdownMessage.distance < 0) {
                         clearInterval(interVal);
                         $(divSelector).addClass('no-display');
                     }
                 }.bind(this), 1000);
             } else {
-                //TODO: do not show message if out of date
                 $(divSelector).html(countdownMessage);
+                $(divSelector).removeClass('no-display');
+            }
+        },
+
+        /**
+         * Get countdown message
+         *
+         * @param {Number} countDownDate
+         * @param {String} countdownMessage
+         * @param {Object} calculatedCountdownMessage
+         * @param {String} divSelector
+         * @param {Boolean} isFirst
+         * @private
+         */
+        _getCountdownMessage: function (
+            countDownDate,
+            countdownMessage,
+            calculatedCountdownMessage,
+            divSelector,
+            isFirst = false
+        ) {
+            if (countdownMessage.includes(this.defaults.replaceString)) {
+                $(divSelector).html(
+                    countdownMessage.replace(
+                        this.defaults.replaceString,
+                        isFirst ? this._calculateCountdown(countDownDate).countdownMessage
+                            : calculatedCountdownMessage.countdownMessage
+                    )
+                );
+            } else {
+                isFirst ? $(divSelector).html(this._calculateCountdown(countDownDate).countdownMessage)
+                    : $(divSelector).html(calculatedCountdownMessage.countdownMessage);
+            }
+
+            if (isFirst) {
+                $(divSelector).removeClass('no-display');
             }
         },
 
@@ -147,6 +174,19 @@ define([
                 countdownMessage: `${ days }d ${ hours }h ${ minutes }m ${ seconds }s`,
                 distance: distance
             };
+        },
+
+        /**
+         * Check if expired
+         *
+         * @param {Number} countDownDate
+         * @return {boolean}
+         * @private
+         */
+        _isExpired: function (countDownDate) {
+            const now = new Date().getTime();
+
+            return countDownDate <= now;
         }
     });
 
