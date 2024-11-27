@@ -24,6 +24,16 @@ class SpecialPriceCountdown extends AbstractModel implements SpecialPriceCountdo
     }
 
     /**
+     * Get message
+     *
+     * @return string
+     */
+    public function getCountdownMessage(): string
+    {
+        return $this->getData(self::COUNTDOWN_MESSAGE);
+    }
+
+    /**
      * Set countdown end date
      *
      * @param string $endDate
@@ -32,5 +42,16 @@ class SpecialPriceCountdown extends AbstractModel implements SpecialPriceCountdo
     public function setCountdownEndDate(string $endDate): SpecialPriceCountdownInterface
     {
         return $this->setData(self::COUNTDOWN_END_DATE, $endDate);
+    }
+
+    /**
+     * Set message
+     *
+     * @param string $message
+     * @return SpecialPriceCountdownInterface
+     */
+    public function setCountdownMessage(string $message): SpecialPriceCountdownInterface
+    {
+        return $this->setData(self::COUNTDOWN_MESSAGE, $message);
     }
 }

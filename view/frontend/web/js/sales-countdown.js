@@ -14,7 +14,8 @@ define([
     $.widget('mage.salesCountdown', {
 
         defaults: {
-            selectorId: '#sales-countdown'
+            selectorId: '#sales-countdown',
+            replaceString: '%c'
         },
 
         /**
@@ -24,9 +25,17 @@ define([
         _create: function () {
             const productId = this.options.productId || null;
             const storeCode = this.options.storeCode || null;
+            const hasSpecialPriceToDate = parseInt(this.options.hasSpecialPriceToDate) || false;
 
-            if (productId && storeCode) {
-                const serviceUrl = urlBuilder.build('/rest/' + storeCode + '/V1/specialPriceCalculate/' + productId);
+            if (productId && storeCode && hasSpecialPriceToDate) {
+                const serviceUrl = urlBuilder.build(
+                    '/rest/' + storeCode + '/V1/specialPriceCalculate/' + productId
+                );
+                this._callApi(serviceUrl);
+            } else if (productId && storeCode) {
+                const serviceUrl = urlBuilder.build(
+                    '/rest/' + storeCode + '/V1/salesCountdownRule/' + productId
+                );
                 this._callApi(serviceUrl);
             }
         },
@@ -61,15 +70,136 @@ define([
          */
         _displayMessage: function (result) {
             const divSelector = this.options.selectorId || this.defaults.selectorId;
-
             if (typeof $(divSelector) !== "undefined"
                 && typeof result === "object"
                 && result.hasOwnProperty('countdown_end_date')
+                && result.hasOwnProperty('countdown_message')
                 && result.countdown_end_date !== ''
+                && result.countdown_message !== ''
             ) {
-                $(divSelector).html(result.countdown_end_date);
+                this._displayCountdown(
+                    result.countdown_end_date,
+                    result.countdown_message,
+                    divSelector
+                );
+            }
+        },
+
+        /**
+         * Display countdown
+         *
+         * @param {String} countdownEndDate
+         * @param {String} countdownMessage
+         * @param {String} divSelector
+         * @private
+         * @return void
+         */
+        _displayCountdown: function (countdownEndDate, countdownMessage, divSelector) {
+            const isShowCountdown = parseInt(this.options.isShowCountdown) || false;
+            const countDownDate = new Date(countdownEndDate).getTime();
+
+            if (this._isExpired(countDownDate)) {
+                return;
+            }
+
+            if (isShowCountdown && countdownMessage.includes(this.defaults.replaceString)) {
+                this._getCountdownMessage(countDownDate, countdownMessage, {}, divSelector, true);
+
+                let interVal = setInterval(function () {
+                    let calculatedCountdownMessage = this._calculateCountdown(countDownDate);
+                    this._getCountdownMessage(
+                        countDownDate,
+                        countdownMessage,
+                        calculatedCountdownMessage,
+                        divSelector
+                    );
+                    if (calculatedCountdownMessage.distance < 0) {
+                        clearInterval(interVal);
+                        $(divSelector).addClass('no-display');
+                    }
+                }.bind(this), 1000);
+            } else {
+                $(divSelector).html(countdownMessage);
                 $(divSelector).removeClass('no-display');
             }
+        },
+
+        /**
+         * Get countdown message
+         *
+         * @param {Number} countDownDate
+         * @param {String} countdownMessage
+         * @param {Object} calculatedCountdownMessage
+         * @param {String} divSelector
+         * @param {Boolean} isFirst
+         * @private
+         */
+        _getCountdownMessage: function (
+            countDownDate,
+            countdownMessage,
+            calculatedCountdownMessage,
+            divSelector,
+            isFirst = false
+        ) {
+            if (countdownMessage.includes(this.defaults.replaceString)) {
+                $(divSelector).html(
+                    countdownMessage.replace(
+                        this.defaults.replaceString,
+                        isFirst ? this._calculateCountdown(countDownDate).countdownMessage
+                            : calculatedCountdownMessage.countdownMessage
+                    )
+                );
+            } else {
+                isFirst ? $(divSelector).html(this._calculateCountdown(countDownDate).countdownMessage)
+                    : $(divSelector).html(calculatedCountdownMessage.countdownMessage);
+            }
+
+            if (isFirst) {
+                $(divSelector).removeClass('no-display');
+            }
+        },
+
+        /**
+         * Calculate countdown
+         *
+         * @param {Number} countDownDate
+         * @return {Object} {{countdownMessage: string, distance: number}}
+         * @private
+         */
+        _calculateCountdown: function (countDownDate) {
+            let notificationMessage = '';
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (days === 0) {
+                notificationMessage = `${ hours }h ${ minutes }m ${ seconds }s`;
+            } else if (hours === 0) {
+                notificationMessage = `${ minutes }m ${ seconds }s`;
+            } else {
+                notificationMessage = `${ days }d ${ hours }h ${ minutes }m ${ seconds }s`;
+            }
+
+            return {
+                countdownMessage: notificationMessage,
+                distance: distance
+            };
+        },
+
+        /**
+         * Check if expired
+         *
+         * @param {Number} countDownDate
+         * @return {boolean}
+         * @private
+         */
+        _isExpired: function (countDownDate) {
+            const now = new Date().getTime();
+
+            return countDownDate <= now;
         }
     });
 

@@ -11,6 +11,7 @@ namespace Space\SalesCountdown\Model\Service;
 use Space\SalesCountdown\Api\SpecialPriceCalculateInterface;
 use Space\SalesCountdown\Model\SpecialPriceCountdownFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Space\SalesCountdown\Api\Data\ConfigInterface;
 use Psr\Log\LoggerInterface;
 use Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -28,6 +29,11 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
     private ProductRepositoryInterface $productRepository;
 
     /**
+     * @var ConfigInterface
+     */
+    private ConfigInterface $config;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -37,15 +43,18 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
      *
      * @param SpecialPriceCountdownFactory $countdownFactory
      * @param ProductRepositoryInterface $productRepository
+     * @param ConfigInterface $config
      * @param LoggerInterface $logger
      */
     public function __construct(
         SpecialPriceCountdownFactory $countdownFactory,
         ProductRepositoryInterface $productRepository,
+        ConfigInterface $config,
         LoggerInterface $logger
     ) {
         $this->countdownFactory = $countdownFactory;
         $this->productRepository = $productRepository;
+        $this->config = $config;
         $this->logger = $logger;
     }
 
@@ -57,17 +66,18 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
      */
     public function calculateEndDate(int $productId): SpecialPriceCountdownInterface
     {
-        $timeStart = microtime(true);
-
         $salesCountdown = $this->countdownFactory->create();
         try {
             $product = $this->productRepository->getById($productId);
             if ($product->getId() > 0
                 && null !== $product->getCustomAttribute('special_to_date')
-                && (float)$product->getFinalPrice() === (float)$product->getSpecialPrice()) {
+                && (float)$product->getFinalPrice() === (float)$product->getSpecialPrice()
+            ) {
                 $salesCountdown->setCountdownEndDate($product->getSpecialToDate());
+                $salesCountdown->setCountdownMessage($this->getSalesMessage());
             } else {
                 $salesCountdown->setCountdownEndDate('');
+                $salesCountdown->setCountdownMessage('');
             }
         } catch (LocalizedException $e) {
             $this->logger->error($e->getMessage());
@@ -75,11 +85,18 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
             $this->logger->critical($e->getMessage());
         }
 
-        $timeEnd = microtime(true);
-        $executionTime = ($timeEnd - $timeStart);
-        $this->logger->debug('Sales Countdown:');
-        $this->logger->debug('Time: ' . $executionTime);
-
         return $salesCountdown;
+    }
+
+    /**
+     * Get sales message
+     *
+     * @return string
+     */
+    private function getSalesMessage(): string
+    {
+        //TODO: add escape
+        return $this->config->isShowCountdown()
+            ? $this->config->getCountdownText() : $this->config->getNotificationText();
     }
 }
