@@ -32,6 +32,11 @@ define([
                     '/rest/' + storeCode + '/V1/specialPriceCalculate/' + productId
                 );
                 this._callApi(serviceUrl);
+            } else if (productId && storeCode) {
+                const serviceUrl = urlBuilder.build(
+                    '/rest/' + storeCode + '/V1/salesCountdownRule/' + productId
+                );
+                this._callApi(serviceUrl);
             }
         },
 
@@ -97,7 +102,7 @@ define([
                 return;
             }
 
-            if (isShowCountdown) {
+            if (isShowCountdown && countdownMessage.includes(this.defaults.replaceString)) {
                 this._getCountdownMessage(countDownDate, countdownMessage, {}, divSelector, true);
 
                 let interVal = setInterval(function () {
