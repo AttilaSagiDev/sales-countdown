@@ -16,6 +16,8 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Space\SalesCountdown\Model\ResourceModel\Rule as ResourceRule;
 use Space\SalesCountdown\Model\ResourceModel\Rule\CollectionFactory;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Space\SalesCountdown\Api\Data\ConfigInterface;
+use Magento\Framework\Escaper;
 use Psr\Log\LoggerInterface;
 use Space\SalesCountdown\Api\Data\SalesCountdownRuleInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -59,6 +61,16 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
     private TimezoneInterface $timezone;
 
     /**
+     * @var ConfigInterface
+     */
+    private ConfigInterface $config;
+
+    /**
+     * @var Escaper
+     */
+    private Escaper $escaper;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -72,15 +84,19 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
      * @param ResourceRule $resourceRule
      * @param CollectionFactory $collectionFactory
      * @param TimezoneInterface $timezone
+     * @param ConfigInterface $config
+     * @param Escaper $escaper
      * @param LoggerInterface $logger
      */
-    public function __construct(
+    public function __construct(// NOSONAR
         SalesCountdownRuleFactory $salesCountdownRuleFactory,
         StoreManagerInterface $storeManager,
         CustomerSession $customerSession,
         ResourceRule $resourceRule,
         CollectionFactory $collectionFactory,
         TimezoneInterface $timezone,
+        ConfigInterface $config,
+        Escaper $escaper,
         LoggerInterface $logger
     ) {
         $this->salesCountdownRuleFactory = $salesCountdownRuleFactory;
@@ -89,6 +105,8 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
         $this->resourceRule = $resourceRule;
         $this->collectionFactory = $collectionFactory;
         $this->timezone = $timezone;
+        $this->config = $config;
+        $this->escaper = $escaper;
         $this->logger = $logger;
     }
 
@@ -135,10 +153,12 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
                 if ($collection->getSize() > 1) {
                     $rule = $this->calculateRulePriority($collection);
                     $salesCountdownRule->setCountdownEndDate($rule[RuleInterface::TO_DATE]);
-                    $salesCountdownRule->setCountdownMessage($rule[RuleInterface::MESSAGE]);
+                    $salesCountdownRule->setCountdownMessage($this->getCountdownMessage($rule[RuleInterface::MESSAGE]));
                 } else {
                     $salesCountdownRule->setCountdownEndDate($collection->getFirstItem()->getToDate());
-                    $salesCountdownRule->setCountdownMessage($collection->getFirstItem()->getMessage());
+                    $salesCountdownRule->setCountdownMessage(
+                        $this->getCountdownMessage($collection->getFirstItem()->getMessage())
+                    );
                 }
             } else {
                 $salesCountdownRule->setCountdownEndDate('');
@@ -188,5 +208,20 @@ class CalculateCountdownRule implements CalculateCountdownRuleInterface
         $dateTime = new \DateTime('now', new \DateTimeZone($websiteTimeZone));
 
         return $dateTime->getTimestamp();
+    }
+
+    /**
+     * Get countdown message
+     *
+     * @param string $message
+     * @return string
+     */
+    private function getCountdownMessage(string $message): string
+    {
+        $text = $this->config->isShowCountdown()
+            ? $this->config->getCountdownText() : $this->config->getNotificationText();
+
+        return $message === '' ? $this->escaper->escapeHtml($text, ['strong'])
+            : $this->escaper->escapeHtml($message, ['strong']);
     }
 }
