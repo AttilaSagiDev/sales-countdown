@@ -12,6 +12,7 @@ use Space\SalesCountdown\Api\SpecialPriceCalculateInterface;
 use Space\SalesCountdown\Model\SpecialPriceCountdownFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Space\SalesCountdown\Api\Data\ConfigInterface;
+use Magento\Framework\Escaper;
 use Psr\Log\LoggerInterface;
 use Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -34,6 +35,11 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
     private ConfigInterface $config;
 
     /**
+     * @var Escaper
+     */
+    private Escaper $escaper;
+
+    /**
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
@@ -44,17 +50,20 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
      * @param SpecialPriceCountdownFactory $countdownFactory
      * @param ProductRepositoryInterface $productRepository
      * @param ConfigInterface $config
+     * @param Escaper $escaper
      * @param LoggerInterface $logger
      */
     public function __construct(
         SpecialPriceCountdownFactory $countdownFactory,
         ProductRepositoryInterface $productRepository,
         ConfigInterface $config,
+        Escaper $escaper,
         LoggerInterface $logger
     ) {
         $this->countdownFactory = $countdownFactory;
         $this->productRepository = $productRepository;
         $this->config = $config;
+        $this->escaper = $escaper;
         $this->logger = $logger;
     }
 
@@ -95,8 +104,8 @@ class SpecialPriceCalculate implements SpecialPriceCalculateInterface
      */
     private function getSalesMessage(): string
     {
-        //TODO: add escape
         return $this->config->isShowCountdown()
-            ? $this->config->getCountdownText() : $this->config->getNotificationText();
+            ? $this->escaper->escapeHtml($this->config->getCountdownText(), ['strong'])
+            : $this->escaper->escapeHtml($this->config->getNotificationText(), ['strong']);
     }
 }

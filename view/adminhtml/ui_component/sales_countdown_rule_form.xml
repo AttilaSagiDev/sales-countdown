@@ -104,9 +104,6 @@
                 </item>
             </argument>
             <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
                 <dataType>text</dataType>
                 <label translate="true">Message</label>
                 <dataScope>message</dataScope>
