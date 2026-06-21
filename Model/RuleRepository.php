@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -94,7 +94,7 @@ class RuleRepository implements RuleRepositoryInterface
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      * @SuppressWarnings(PHPMD.LongVariable)
      */
-    public function __construct(
+    public function __construct(// NOSONAR
         ResourceRule $ruleResource,
         RuleFactory $ruleFactory,
         RuleInterfaceFactory $dataRuleFactory,
@@ -102,7 +102,7 @@ class RuleRepository implements RuleRepositoryInterface
         Data\RuleSearchResultsInterfaceFactory $searchResultsFactory,
         DataObjectHelper $dataObjectHelper,
         DataObjectProcessor $dataObjectProcessor,
-        CollectionProcessorInterface $collectionProcessor = null,
+        ?CollectionProcessorInterface $collectionProcessor = null,
         ?HydratorInterface $hydrator = null
     ) {
         $this->ruleResource = $ruleResource;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -98,7 +98,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      * @param ResourceRule|null $ruleResourceModel
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
-    public function __construct(
+    public function __construct(// NOSONAR
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
@@ -108,10 +108,10 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
         array $data = [],
-        ExtensionAttributesFactory $extensionFactory = null,
-        AttributeValueFactory $customAttributeFactory = null,
-        Json $serializer = null,
-        ResourceRule $ruleResourceModel = null
+        ?ExtensionAttributesFactory $extensionFactory = null,
+        ?AttributeValueFactory $customAttributeFactory = null,
+        ?Json $serializer = null,
+        ?ResourceRule $ruleResourceModel = null
     ) {
         $this->combineFactory = $combineFactory;
         $this->actionCollectionFactory = $actionCollectionFactory;
