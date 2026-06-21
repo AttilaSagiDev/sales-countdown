@@ -1,14 +1,18 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
 /**
- * @var $block \Magento\Framework\View\Element\Template
- * @var $escaper \Magento\Framework\Escaper
- * @var $viewModel \Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown
+ * @var $block Template
+ * @var $escaper Escaper
+ * @var $viewModel SalesCountdown
  */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown;
 
 $viewModel = $block->getData('view_model');
 ?>
