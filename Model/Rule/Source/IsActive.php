@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -15,12 +15,12 @@ class IsActive implements OptionSourceInterface
     /**
      * Enabled
      */
-    public const STATUS_ENABLED = 1;
+    public const int STATUS_ENABLED = 1;
 
     /**
      * Disabled
      */
-    public const STATUS_DISABLED = 0;
+    public const int STATUS_DISABLED = 0;
 
     /**
      * Get options

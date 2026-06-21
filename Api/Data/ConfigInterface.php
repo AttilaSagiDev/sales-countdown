@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -13,22 +13,22 @@ interface ConfigInterface
     /**
      * Enabled config path
      */
-    public const XML_PATH_ENABLED = 'sales_countdown/sales_countdown_config/enabled';
+    public const string XML_PATH_ENABLED = 'sales_countdown/sales_countdown_config/enabled';
 
     /**
      * Show countdown config path
      */
-    public const XML_PATH_SHOW_COUNTDOWN = 'sales_countdown/sales_countdown_display/show_countdown';
+    public const string XML_PATH_SHOW_COUNTDOWN = 'sales_countdown/sales_countdown_display/show_countdown';
 
     /**
      * Countdown text config path
      */
-    public const XML_PATH_COUNTDOWN_TEXT = 'sales_countdown/sales_countdown_display/countdown_text';
+    public const string XML_PATH_COUNTDOWN_TEXT = 'sales_countdown/sales_countdown_display/countdown_text';
 
     /**
      * Notification text config path
      */
-    public const XML_PATH_NOTIFICATION_TEXT = 'sales_countdown/sales_countdown_display/notification_text';
+    public const string XML_PATH_NOTIFICATION_TEXT = 'sales_countdown/sales_countdown_display/notification_text';
 
     /**
      * Check if sales countdown module is enabled

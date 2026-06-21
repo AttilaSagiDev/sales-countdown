@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -19,8 +19,8 @@ class RuleActions extends Column
     /**
      * Url path
      */
-    public const URL_PATH_EDIT = 'sales_countdown/rule/edit';
-    public const URL_PATH_DELETE = 'sales_countdown/rule/delete';
+    public const string URL_PATH_EDIT = 'sales_countdown/rule/edit';
+    public const string URL_PATH_DELETE = 'sales_countdown/rule/delete';
 
     /**
      * @var UrlInterface

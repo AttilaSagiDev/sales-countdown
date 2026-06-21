@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -19,7 +19,7 @@ class HandleRuleProduct
     /**
      * Table name
      */
-    private const TABLE_NAME = 'sales_countdown_rule_product';
+    private const string TABLE_NAME = 'sales_countdown_rule_product';
 
     /**
      * @var ResourceConnection

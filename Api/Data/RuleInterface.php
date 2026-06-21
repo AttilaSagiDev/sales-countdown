@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -13,15 +13,15 @@ interface RuleInterface
     /**
      * Constants for keys of data array
      */
-    public const TABLE_NAME = 'sales_countdown_rule';
-    public const RULE_ID = 'rule_id';
-    public const NAME = 'name';
-    public const MESSAGE = 'message';
-    public const DESCRIPTION = 'description';
-    public const FROM_DATE = 'from_date';
-    public const TO_DATE = 'to_date';
-    public const IS_ACTIVE = 'is_active';
-    public const SORT_ORDER = 'sort_order';
+    public const string TABLE_NAME = 'sales_countdown_rule';
+    public const string RULE_ID = 'rule_id';
+    public const string NAME = 'name';
+    public const string MESSAGE = 'message';
+    public const string DESCRIPTION = 'description';
+    public const string FROM_DATE = 'from_date';
+    public const string TO_DATE = 'to_date';
+    public const string IS_ACTIVE = 'is_active';
+    public const string SORT_ORDER = 'sort_order';
 
     /**
      * Get rule ID

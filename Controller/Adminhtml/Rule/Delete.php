@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -24,7 +24,7 @@ class Delete extends Action implements HttpPostActionInterface
      *
      * @see _isAllowed()
      */
-    public const ADMIN_RESOURCE = 'Space_SalesCountdown::delete';
+    public const string ADMIN_RESOURCE = 'Space_SalesCountdown::delete';
 
     /**
      * @var RuleRepositoryInterface

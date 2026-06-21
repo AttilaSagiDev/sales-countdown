@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -22,7 +22,7 @@ class NewConditionHtml extends Action implements HttpPostActionInterface, HttpGe
      *
      * @see _isAllowed()
      */
-    public const ADMIN_RESOURCE = 'Space_SalesCountdown::save';
+    public const string ADMIN_RESOURCE = 'Space_SalesCountdown::save';
 
     /**
      * New condition execute
