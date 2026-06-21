@@ -53,7 +53,7 @@ Enable Extension: Here you can enable the extension.
 
 ## Change Log ##
 
-Version 1.0.0 - XXX, 2024
+Version 1.0.0 - June 21, 2026
 - Compatibility with Magento Community Edition 2.4.x
 - Compatibility with Adobe Commerce 2.4.x
 

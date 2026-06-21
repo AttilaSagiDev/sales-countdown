@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -69,7 +69,7 @@ class Collection extends RuleCollection implements SearchResultInterface
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
-    public function __construct(
+    public function __construct(// NOSONAR
         EntityFactoryInterface $entityFactory,
         LoggerInterface $logger,
         FetchStrategyInterface $fetchStrategy,
@@ -79,10 +79,10 @@ class Collection extends RuleCollection implements SearchResultInterface
         string $eventObject,
         string $resourceModel,
         string $model = Document::class,
-        AdapterInterface|null $connection = null,
-        AbstractDb $resource = null,
-        DataObject $associatedEntityMap = null,
-        TimezoneInterface $timeZone = null
+        ?AdapterInterface $connection = null,
+        ?AbstractDb $resource = null,
+        ?DataObject $associatedEntityMap = null,
+        ?TimezoneInterface $timeZone = null
     ) {
         $this->resourceModel = $resourceModel;
         $this->model = $model;
@@ -169,7 +169,7 @@ class Collection extends RuleCollection implements SearchResultInterface
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null): static
+    public function setSearchCriteria(?SearchCriteriaInterface $searchCriteria = null): static
     {
         return $this;
     }
@@ -203,7 +203,7 @@ class Collection extends RuleCollection implements SearchResultInterface
      * @return $this
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function setItems(array $items = null): static
+    public function setItems(?array $items = null): static
     {
         return $this;
     }

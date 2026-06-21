@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -46,8 +46,8 @@ class Rule extends AbstractResource
     public function __construct(
         Context $context,
         EntityManager $entityManager,
-        string $connectionName = null,
-        DataObject $associatedEntityMap = null
+        ?string $connectionName = null,
+        ?DataObject $associatedEntityMap = null
     ) {
         $this->entityManager = $entityManager;
         $this->_associatedEntitiesMap = $associatedEntityMap ?? ObjectManager::getInstance()

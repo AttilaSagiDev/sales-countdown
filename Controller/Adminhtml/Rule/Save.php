@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -35,14 +35,14 @@ class Save extends Action implements HttpPostActionInterface
     /**
      * Edit url
      */
-    private const EDIT_URL = 'sales_countdown/*/edit';
+    private const string EDIT_URL = 'sales_countdown/*/edit';
 
     /**
      * Authorization level of a basic admin session
      *
      * @see _isAllowed()
      */
-    public const ADMIN_RESOURCE = 'Space_SalesCountdown::save';
+    public const string ADMIN_RESOURCE = 'Space_SalesCountdown::save';
 
     /**
      * @var DataPersistorInterface
@@ -84,8 +84,8 @@ class Save extends Action implements HttpPostActionInterface
         DataPersistorInterface $dataPersistor,
         TimezoneInterface $localeDate,
         Date $dateFilter,
-        RuleFactory $ruleFactory = null,
-        RuleRepositoryInterface $ruleRepository = null
+        ?RuleFactory $ruleFactory = null,
+        ?RuleRepositoryInterface $ruleRepository = null
     ) {
         $this->dataPersistor = $dataPersistor;
         $this->localeDate = $localeDate;
