@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Space\SalesCountdown\Model;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Rule\Model\AbstractModel;
 use Space\SalesCountdown\Api\Data\RuleInterface;
 use Magento\Framework\DataObject\IdentityInterface;
@@ -105,8 +106,8 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
         CombineFactory $combineFactory,
         CollectionFactory $actionCollectionFactory,
         TimezoneInterface $localeDate,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = [],
         ?ExtensionAttributesFactory $extensionFactory = null,
         ?AttributeValueFactory $customAttributeFactory = null,
@@ -135,6 +136,7 @@ class Rule extends AbstractModel implements RuleInterface, IdentityInterface // 
      *
      * @return void
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     * @throws LocalizedException
      */
     protected function _construct(): void
     {
