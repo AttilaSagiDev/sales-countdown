@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -13,8 +13,8 @@ interface SalesCountdownRuleInterface
     /**
      * Constants for keys of data array
      */
-    public const COUNTDOWN_END_DATE = 'countdown_end_date';
-    public const COUNTDOWN_MESSAGE = 'countdown_message';
+    public const string COUNTDOWN_END_DATE = 'countdown_end_date';
+    public const string COUNTDOWN_MESSAGE = 'countdown_message';
 
     /**
      * Get countdown end date

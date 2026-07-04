@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2024 Attila Sagi
+ * Copyright (c) 2026 Attila Sagi
  * @license http://www.opensource.org/licenses/mit-license.html  MIT License
  */
 
@@ -29,7 +29,7 @@ class Edit extends Action implements HttpGetActionInterface
      *
      * @see _isAllowed()
      */
-    public const ADMIN_RESOURCE = 'Space_SalesCountdown::sales_countdown_rule';
+    public const string ADMIN_RESOURCE = 'Space_SalesCountdown::sales_countdown_rule';
 
     /**
      * @var PageFactory
