@@ -70,6 +70,16 @@ class SalesCountdown implements ArgumentInterface
     }
 
     /**
+     * Check to show seconds
+     *
+     * @return bool
+     */
+    public function isShowSeconds(): bool
+    {
+        return $this->config->isShowSeconds();
+    }
+
+    /**
      * Get product Id
      *
      * @return int

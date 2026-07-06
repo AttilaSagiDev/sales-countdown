@@ -77,7 +77,7 @@ class CatalogProducts
         StoreManagerInterface $storeManager,
         Iterator $resourceIterator,
         ProductFactory $productFactory,
-        ConditionsToCollectionApplier $conditionsToCollectionApplier = null
+        ?ConditionsToCollectionApplier $conditionsToCollectionApplier = null
     ) {
         $this->productCollectionFactory = $productCollectionFactory;
         $this->storeManager = $storeManager;

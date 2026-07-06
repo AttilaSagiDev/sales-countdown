@@ -18,7 +18,8 @@ define([
             productId: null,
             storeCode: null,
             hasSpecialPriceToDate: false,
-            isShowCountdown: false
+            isShowCountdown: false,
+            isShowSeconds: false
         },
 
         /**
@@ -115,6 +116,7 @@ define([
          */
         _calculateCountdown: function (endTime) {
             const distance = endTime - Date.now();
+            const isShowSeconds = !!parseInt(this.options.isShowSeconds);
 
             if (distance < 0) {
                 return { text: '', distance };
@@ -126,12 +128,14 @@ define([
             const seconds = Math.floor((distance % 60000) / 1000);
 
             let text;
+            const s = isShowSeconds ? ` ${seconds}s` : '';
+
             if (days > 0) {
-                text = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                text = `${days}d ${hours}h ${minutes}m${s}`;
             } else if (hours > 0) {
-                text = `${hours}h ${minutes}m ${seconds}s`;
+                text = `${hours}h ${minutes}m${s}`;
             } else {
-                text = `${minutes}m ${seconds}s`;
+                text = `${minutes}m${s}`;
             }
 
             return { text, distance };

@@ -31,6 +31,11 @@ interface ConfigInterface
     public const string XML_PATH_NOTIFICATION_TEXT = 'sales_countdown/sales_countdown_display/notification_text';
 
     /**
+     * Show seconds config path
+     */
+    public const string XML_PATH_SHOW_SECONDS = 'sales_countdown/sales_countdown_display/show_seconds';
+
+    /**
      * Check if sales countdown module is enabled
      *
      * @return bool
@@ -57,4 +62,11 @@ interface ConfigInterface
      * @return string
      */
     public function getNotificationText(): string;
+
+    /**
+     * Check to show seconds
+     *
+     * @return bool
+     */
+    public function isShowSeconds(): bool;
 }

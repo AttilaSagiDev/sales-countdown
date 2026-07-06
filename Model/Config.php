@@ -81,4 +81,17 @@ class Config implements ConfigInterface
             ScopeInterface::SCOPE_STORE
         );
     }
+
+    /**
+     * Check to show seconds
+     *
+     * @return bool
+     */
+    public function isShowSeconds(): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            ConfigInterface::XML_PATH_SHOW_SECONDS,
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }
