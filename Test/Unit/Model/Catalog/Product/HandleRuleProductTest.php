@@ -20,6 +20,7 @@ use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 
 /**
  * Interface for mocking magic methods of Rule
+ * //phpcs:disable
  */
 interface ExtendedRuleInterface extends RuleInterface
 {

@@ -24,6 +24,10 @@ use Space\SalesCountdown\Model\Rule\Condition\Combine;
 use Magento\Framework\DB\Select;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
 
+/**
+ * Interface for mocking magic methods of Rule
+ * //phpcs:disable
+ */
 interface RuleMockInterface extends RuleInterface
 {
     public function getConditions();
