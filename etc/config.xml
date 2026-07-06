@@ -20,6 +20,7 @@
                 <notification_text>
                     <![CDATA[Hurry, <strong>sale</strong> ends soon!]]>
                 </notification_text>
+                <show_seconds>1</show_seconds>
             </sales_countdown_display>
         </sales_countdown>
     </default>

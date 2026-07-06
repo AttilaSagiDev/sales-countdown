@@ -57,6 +57,15 @@
                         <field id="*/sales_countdown_display/show_countdown">0</field>
                     </depends>
                 </field>
+                <field id="show_seconds" translate="label comment" type="select" sortOrder="40" showInDefault="1"
+                       showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Show Seconds</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Please select to show seconds in the countdown.</comment>
+                    <depends>
+                        <field id="*/sales_countdown_display/show_countdown">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

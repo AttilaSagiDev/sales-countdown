@@ -89,4 +89,17 @@ class ConfigTest extends TestCase
 
         $this->assertEquals($expectedText, $this->model->getNotificationText());
     }
+
+    public function testIsShowSeconds(): void
+    {
+        $this->scopeConfigMock->expects($this->once())
+            ->method('isSetFlag')
+            ->with(
+                ConfigInterface::XML_PATH_SHOW_SECONDS,
+                ScopeInterface::SCOPE_STORE
+            )
+            ->willReturn(true);
+
+        $this->assertTrue($this->model->isShowSeconds());
+    }
 }
