@@ -14,6 +14,9 @@ use Magento\Framework\Phrase;
 
 class IsActiveTest extends TestCase
 {
+    /**
+     * @var IsActive
+     */
     private IsActive $sourceModel;
 
     protected function setUp(): void
@@ -21,9 +24,6 @@ class IsActiveTest extends TestCase
         $this->sourceModel = new IsActive();
     }
 
-    /**
-     * Test getAvailableStatuses returns correct status keys mapped to Phrase values
-     */
     public function testGetAvailableStatuses(): void
     {
         $statuses = $this->sourceModel->getAvailableStatuses();
@@ -35,9 +35,6 @@ class IsActiveTest extends TestCase
         $this->assertInstanceOf(Phrase::class, $statuses[IsActive::STATUS_DISABLED]);
     }
 
-    /**
-     * Test toOptionArray returns correctly formatted structure for Magento UI components
-     */
     public function testToOptionArray(): void
     {
         $options = $this->sourceModel->toOptionArray();
