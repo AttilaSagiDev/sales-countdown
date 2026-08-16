@@ -25,6 +25,8 @@ use Space\SalesCountdown\Model\Rule\Condition\Combine as CombinedCondition;
 use Space\SalesCountdown\Model\Rule\Condition\ConditionsToSearchCriteriaMapper;
 use Space\SalesCountdown\Model\Rule\Condition\Product as SimpleCondition;
 
+//phpcs:disable Generic.Files.LineLength
+
 class ConditionsToSearchCriteriaMapperTest extends TestCase
 {
     use MockCreationTrait;
@@ -264,7 +266,9 @@ class ConditionsToSearchCriteriaMapperTest extends TestCase
         $this->combinedFilterGroupFactoryMock->expects($this->exactly(2))
             ->method('create')
             ->willReturnCallback(function (array $args) use ($innerFilterGroupMock, $outerFilterGroupMock, $expectedGlue, $filterMock1, $filterMock2) {
-                if (isset($args['data'][FilterGroup::FILTERS]) && $args['data'][FilterGroup::FILTERS] === [$filterMock1, $filterMock2]) {
+                if (isset($args['data'][FilterGroup::FILTERS])
+                    && $args['data'][FilterGroup::FILTERS] === [$filterMock1, $filterMock2]
+                ) {
                     $this->assertEquals($expectedGlue, $args['data'][FilterGroup::COMBINATION_MODE]);
                     return $innerFilterGroupMock;
                 }

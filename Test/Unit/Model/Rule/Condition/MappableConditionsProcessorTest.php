@@ -271,8 +271,11 @@ class MappableConditionsProcessorTest extends TestCase
     public function testRebuildConditionsTreeThrowsInputExceptionOnUndefinedConditionType(): void
     {
         $invalidConditionMock = new class extends \Magento\Rule\Model\Condition\AbstractCondition {
-            public function __construct() {}
-            public function getType(): string {
+            public function __construct()
+            {
+            }
+            public function getType(): string
+            {
                 return 'Unknown\Condition\Type';
             }
         };

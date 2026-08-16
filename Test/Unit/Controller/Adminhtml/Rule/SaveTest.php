@@ -155,7 +155,8 @@ class SaveTest extends TestCase
         $this->context->expects($this->any())->method('getMessageManager')->willReturn($this->messageManager);
         $this->context->expects($this->any())->method('getEventManager')->willReturn($this->eventManager);
         $this->context->expects($this->any())->method('getObjectManager')->willReturn($this->objectManager);
-        $this->context->expects($this->any())->method('getResultRedirectFactory')->willReturn($this->resultRedirectFactory);
+        $this->context->expects($this->any())
+            ->method('getResultRedirectFactory')->willReturn($this->resultRedirectFactory);
         $this->context->expects($this->any())->method('getSession')->willReturn($this->session);
         $this->context->expects($this->any())->method('getActionFlag')->willReturn($this->actionFlag);
         $this->context->expects($this->any())->method('getRedirect')->willReturn($this->redirect);

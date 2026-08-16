@@ -6,6 +6,8 @@
 
 declare(strict_types=1);
 
+namespace Space\SalesCountdown\Test\Unit\Controller\Adminhtml\Rule;
+
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\Result\Redirect;
