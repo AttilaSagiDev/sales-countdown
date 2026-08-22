@@ -1,4 +1,4 @@
-**# **Magento 2 Sales Countdown Extension** #
+# **Magento 2 Sales Countdown Extension** #
 
 [![M2 Coding Standard](https://github.com/AttilaSagiDev/sales-countdown/actions/workflows/codesniffer-actions.yml/badge.svg)](https://github.com/AttilaSagiDev/sales-countdown/actions/workflows/codesniffer-actions.yml)
 
