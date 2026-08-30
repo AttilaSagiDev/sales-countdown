@@ -11,6 +11,8 @@ The extension adds functionality to show a sales countdown timer on the product 
 ![image_1.png](doc/images/image_1.png)
 ![image_2.png](doc/images/image_2.png)
 ![image_3.png](doc/images/image_3.png)
+![image_4.png](doc/images/image_4.png)
+![image_5.png](doc/images/image_5.png)
 
 ## Features ##
 
