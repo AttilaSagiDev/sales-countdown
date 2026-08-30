@@ -1,0 +1,73 @@
+Conditions,Conditions
+"Conditions (don't add conditions if rule is applied to all products)","Conditions (don't add conditions if rule is applied to all products)"
+Back,Back
+"Delete Rule","Delete Rule"
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+"Save options","Save options"
+"Save & Close","Save & Close"
+"You deleted the rule.","You deleted the rule."
+"Something went wrong while trying to delete the rule.","Something went wrong while trying to delete the rule."
+"We can't find a rule to delete.","We can't find a rule to delete."
+"This rule no longer exists.","This rule no longer exists."
+"Edit Rule","Edit Rule"
+"New Rule","New Rule"
+Rules,Rules
+"Sales Countdown","Sales Countdown"
+"Sales Countdown Rules","Sales Countdown Rules"
+"A total of %1 record(s) have been deleted.","A total of %1 record(s) have been deleted."
+"You saved the rule.","You saved the rule."
+"Something went wrong while saving the rule data. Please review the error log.","Something went wrong while saving the rule data. Please review the error log."
+"Update the Product","Update the Product"
+"Conditions Combination","Conditions Combination"
+"Product Attribute","Product Attribute"
+"Undefined condition type ""%1"" passed in.","Undefined condition type ""%1"" passed in."
+"Undefined SQL operator ""%1"" passed in. Valid operators are: %2","Undefined SQL operator ""%1"" passed in. Valid operators are: %2"
+"Undefined rule operator ""%1"" passed in. Valid operators are: %2","Undefined rule operator ""%1"" passed in. Valid operators are: %2"
+"Undefined rule aggregator ""%1"" passed in. Valid operators are: %2","Undefined rule aggregator ""%1"" passed in. Valid operators are: %2"
+Enabled,Enabled
+Disabled,Disabled
+"The rule with the ""%1"" ID wasn't found. Verify the ID and try again.","The rule with the ""%1"" ID wasn't found. Verify the ID and try again."
+"The ""%1"" rule was unable to be saved. Please try again.","The ""%1"" rule was unable to be saved. Please try again."
+Edit,Edit
+Delete,Delete
+"Delete %1","Delete %1"
+"Are you sure you want to delete a %1 record?","Are you sure you want to delete a %1 record?"
+"Save Rule","Save Rule"
+"Sales Countdown Section","Sales Countdown Section"
+"Space Extensions","Space Extensions"
+Configuration,Configuration
+"Enable Extension","Enable Extension"
+"Enable extension.","Enable extension."
+Display,Display
+"Show Countdown Timer","Show Countdown Timer"
+"Please select to show the countdown timer.","Please select to show the countdown timer."
+"Notification Text With Countdown Timer","Notification Text With Countdown Timer"
+"The countdown text will be displayed. Please note that the ""%c"" will be replaced with the countdown timer, so you have to add it in the proper place within the text. You can use only strong HTML tag.","The countdown text will be displayed. Please note that the ""%c"" will be replaced with the countdown timer, so you have to add it in the proper place within the text. You can use only strong HTML tag."
+"Notification Text Without Countdown Timer","Notification Text Without Countdown Timer"
+"The notification text will be displayed. You can use only strong HTML tag.","The notification text will be displayed. You can use only strong HTML tag."
+"Show Seconds","Show Seconds"
+"Please select to show seconds in the countdown.","Please select to show seconds in the countdown."
+"General Information","General Information"
+"Enable Rule","Enable Rule"
+Name,Name
+Message,Message
+Description,Description
+"
+                        This is content for the description. Maximum characters 1000 and html tags not allowed
+                    ","
+                        This is content for the description. Maximum characters 1000 and html tags not allowed
+                    "
+Websites,Websites
+"Customer Groups","Customer Groups"
+From,From
+To,To
+"Sort Order","Sort Order"
+"Add New Rule","Add New Rule"
+"Are you sure you want to delete selected items?","Are you sure you want to delete selected items?"
+"Delete items","Delete items"
+ID,ID
+Status,Status
+"Form Date","Form Date"
+"To Date","To Date"
+"Web Site","Web Site"
