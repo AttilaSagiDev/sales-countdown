@@ -1,0 +1,71 @@
+{
+    "sales_countdown_rule": {
+        "column": {
+            "rule_id": true,
+            "name": true,
+            "message": true,
+            "description": true,
+            "from_date": true,
+            "to_date": true,
+            "is_active": true,
+            "conditions_serialized": true,
+            "sort_order": true
+        },
+        "index": {
+            "SALES_COUNTDOWN_RULE_IS_ACTIVE_SORT_ORDER_TO_DATE_FROM_DATE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "sales_countdown_rule_website": {
+        "column": {
+            "rule_id": true,
+            "website_id": true
+        },
+        "index": {
+            "SALES_COUNTDOWN_RULE_WEBSITE_WEBSITE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "SALES_COUNTDOWN_RULE_WS_RULE_ID_SALES_COUNTDOWN_RULE_RULE_ID": true,
+            "SALES_COUNTDOWN_RULE_WEBSITE_WEBSITE_ID_STORE_WEBSITE_WEBSITE_ID": true
+        }
+    },
+    "sales_countdown_rule_customer_group": {
+        "column": {
+            "rule_id": true,
+            "customer_group_id": true
+        },
+        "index": {
+            "SALES_COUNTDOWN_RULE_CUSTOMER_GROUP_CUSTOMER_GROUP_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_461D87C8A3B0022D5AFE0F26F2A969B6": true,
+            "FK_53CB72B15301F8DF9EAC97F8F8F5A77B": true
+        }
+    },
+    "sales_countdown_rule_product": {
+        "column": {
+            "rule_product_id": true,
+            "rule_id": true,
+            "from_time": true,
+            "to_time": true,
+            "customer_group_id": true,
+            "product_id": true,
+            "website_id": true
+        },
+        "index": {
+            "SALES_COUNTDOWN_RULE_PRODUCT_CUSTOMER_GROUP_ID": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_WEBSITE_ID": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_FROM_TIME": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_TO_TIME": true,
+            "SALES_COUNTDOWN_RULE_PRODUCT_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_A5D17B0393F7CF508BAF9565D353F337": true
+        }
+    }
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Space\SalesCountdown\Model\ResourceModel\Rule">
+        <arguments>
+            <argument name="eventManager" xsi:type="object">Magento\Framework\Event\Manager\Proxy</argument>
+        </arguments>
+    </type>
+    <preference for="Space\SalesCountdown\Api\Data\ConfigInterface"
+                type="Space\SalesCountdown\Model\Config" />
+    <preference for="Space\SalesCountdown\Api\Data\RuleInterface"
+                type="Space\SalesCountdown\Model\Rule" />
+    <preference for="Space\SalesCountdown\Api\RuleRepositoryInterface"
+                type="Space\SalesCountdown\Model\RuleRepository" />
+    <preference for="Space\SalesCountdown\Api\Data\SpecialPriceCountdownInterface"
+                type="Space\SalesCountdown\Model\SpecialPriceCountdown" />
+    <preference for="Space\SalesCountdown\Api\SpecialPriceCalculateInterface"
+                type="Space\SalesCountdown\Model\Service\SpecialPriceCalculate" />
+    <preference for="Space\SalesCountdown\Api\Data\SalesCountdownRuleInterface"
+                type="Space\SalesCountdown\Model\SalesCountdownRule" />
+    <preference for="Space\SalesCountdown\Api\CalculateCountdownRuleInterface"
+                type="Space\SalesCountdown\Model\Service\CalculateCountdownRule" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_countdown_rule_listing_data_source"
+                      xsi:type="string">Space\SalesCountdown\Model\ResourceModel\Rule\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\ResourceModel\Rule\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_countdown_rule</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_countdown_rule_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">countdown_rule_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\Rule</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Model\Entity\RepositoryFactory">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="Space\SalesCountdown\Api\Data\RuleInterface"
+                      xsi:type="string">Space\SalesCountdown\Api\RuleRepositoryInterface</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Space\SalesCountdown\Api\Data\RuleInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">sales_countdown_rule</item>
+                    <item name="identifierField" xsi:type="string">rule_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Space\SalesCountdown\Model\ResourceModel\Rule\AssociatedEntityMap"
+                 type="Magento\Framework\DataObject">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="website" xsi:type="array">
+                    <item name="associations_table" xsi:type="string">sales_countdown_rule_website</item>
+                    <item name="rule_id_field" xsi:type="string">rule_id</item>
+                    <item name="entity_id_field" xsi:type="string">website_id</item>
+                </item>
+                <item name="customer_group" xsi:type="array">
+                    <item name="associations_table" xsi:type="string">sales_countdown_rule_customer_group</item>
+                    <item name="rule_id_field" xsi:type="string">rule_id</item>
+                    <item name="entity_id_field" xsi:type="string">customer_group_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\EntityManager\HydratorPool">
+        <arguments>
+            <argument name="hydrators" xsi:type="array">
+                <item name="Space\SalesCountdown\Api\Data\RuleInterface"
+                      xsi:type="string">Magento\Framework\EntityManager\AbstractModelHydrator</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\AttributePool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="salesCountdown" xsi:type="array">
+                    <item name="Space\SalesCountdown\Api\Data\RuleInterface" xsi:type="array">
+                        <item name="read" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\ReadHandler</item>
+                        <item name="create" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\SaveHandler</item>
+                        <item name="update" xsi:type="string">Space\SalesCountdown\Model\ResourceModel\SaveHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\Rule\Condition\Combine">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="form_name" xsi:type="string">sales_countdown_rule_form</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\Rule\Condition\Product">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="form_name" xsi:type="string">sales_countdown_rule_form</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="SalesCountdownCustomConditionProvider"
+                 type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\ConditionProcessor\CustomConditionProvider">
+        <arguments>
+            <argument name="customConditionProcessors" xsi:type="array">
+                <item name="category_ids" xsi:type="object">Magento\Catalog\Model\Api\SearchCriteria\CollectionProcessor\ConditionProcessor\ProductCategoryCondition</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesCountdownAdvancedFilterProcessor"
+                 type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\AdvancedFilterProcessor">
+        <arguments>
+            <argument name="defaultConditionProcessor" xsi:type="object">Magento\Catalog\Model\Api\SearchCriteria\CollectionProcessor\ConditionProcessor\DefaultCondition</argument>
+            <argument name="customConditionProvider" xsi:type="object">SalesCountdownCustomConditionProvider</argument>
+        </arguments>
+    </virtualType>
+    <type name="Space\SalesCountdown\Model\Catalog\Product\ConditionsToCollectionApplier">
+        <arguments>
+            <argument name="searchCriteriaProcessor" xsi:type="object">SalesCountdownAdvancedFilterProcessor</argument>
+        </arguments>
+    </type>
+    <type name="Space\SalesCountdown\Model\Rule\Condition\MappableConditionsProcessor">
+        <arguments>
+            <argument name="customConditionProvider" xsi:type="object">SalesCountdownCustomConditionProvider</argument>
+        </arguments>
+    </type>
+</config>

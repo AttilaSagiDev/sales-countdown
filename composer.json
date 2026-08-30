@@ -1,0 +1,29 @@
+{
+    "name": "space/module-sales-countdown",
+    "description": "Sales Countdown Magento 2 extension.",
+    "type": "magento2-module",
+    "license": [
+        "MIT"
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "version": "1.0.0",
+    "require": {
+        "php": "~8.3.0||~8.4.0||~8.5.0",
+        "magento/framework": "103.0.*",
+        "magento/module-catalog": "104.0.*",
+        "magento/module-customer": "103.0.*",
+        "magento/module-rule": "100.4.*",
+        "magento/module-catalog-rule": "101.2.*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Space\\SalesCountdown\\": ""
+        }
+    }
+}
+

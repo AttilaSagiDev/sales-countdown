@@ -1,0 +1,39 @@
+<?php
+/**
+ * Copyright (c) 2026 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+
+/**
+ * @var $block Template
+ * @var $escaper Escaper
+ * @var $viewModel SalesCountdown
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Space\SalesCountdown\ViewModel\Catalog\Product\View\SalesCountdown;
+
+$viewModel = $block->getData('view_model');
+?>
+<?php if (null !== $viewModel): ?>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "salesCountdown": {
+                            "component": "Space_SalesCountdown/js/sales-countdown",
+                            "selectorId": "#sales-countdown",
+                            "productId": "<?= $escaper->escapeHtml($viewModel->getProductId()) ?>",
+                            "storeCode": "<?= $escaper->escapeHtml($viewModel->getStoreCode()) ?>",
+                            "hasSpecialPriceToDate": "<?= $escaper->escapeHtml($viewModel->hasSpecialPriceToDate()) ?>",
+                            "isShowCountdown": "<?= $escaper->escapeHtml($viewModel->isShowCountdown()) ?>",
+                            "isShowSeconds": "<?= $escaper->escapeHtml($viewModel->isShowSeconds()) ?>"
+                    }
+                }
+            }
+        }
+    }
+    </script>
+<?php endif; ?>

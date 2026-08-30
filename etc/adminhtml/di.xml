@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Space\SalesCountdown\Api\RuleRepositoryInterface">
+        <plugin name="salesCountdownRuleSaveAfter" sortOrder="10"
+                type="Space\SalesCountdown\Plugin\Model\RuleRepositorySave"/>
+    </type>
+</config>

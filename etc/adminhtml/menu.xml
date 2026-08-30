@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Space_SalesCountdown::sales_countdown_rules" title="Sales Countdown"
+             translate="title" module="Space_SalesCountdown"
+             parent="Magento_Backend::marketing"
+             sortOrder="500" resource="Space_SalesCountdown::sales_countdown_rules"/>
+        <add id="Space_SalesCountdown::sales_countdown_rule" title="Sales Countdown Rules"
+             translate="title" module="Space_SalesCountdown" sortOrder="10"
+             parent="Space_SalesCountdown::sales_countdown_rules"
+             action="sales_countdown/rule" resource="Space_SalesCountdown::sales_countdown_rule"/>
+    </menu>
+</config>

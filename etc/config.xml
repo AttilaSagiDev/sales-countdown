@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026 Attila Sagi
+ * @license http://www.opensource.org/licenses/mit-license.html  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sales_countdown>
+            <sales_countdown_config>
+                <enabled>0</enabled>
+            </sales_countdown_config>
+            <sales_countdown_display>
+                <show_countdown>1</show_countdown>
+                <countdown_text>
+                    <![CDATA[Hurry! Sales end: <strong>%c</strong>]]>
+                </countdown_text>
+                <notification_text>
+                    <![CDATA[Hurry, <strong>sale</strong> ends soon!]]>
+                </notification_text>
+                <show_seconds>1</show_seconds>
+            </sales_countdown_display>
+        </sales_countdown>
+    </default>
+</config>
